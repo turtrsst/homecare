@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 260" width="400" height="260" role="img" aria-label="Psikoterapi Terpadu">
+  <title>Psikoterapi Terpadu</title>
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#6d28d9"/>
+      <stop offset="100%" stop-color="#8b5cf6"/>
+    </linearGradient>
+    <linearGradient id="sheen" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity=".22"/>
+      <stop offset="60%" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="260" fill="url(#g)"/>
+  <rect width="400" height="260" fill="url(#sheen)"/>
+  <circle cx="348" cy="34" r="104" fill="#ffffff" fill-opacity=".12"/>
+  <circle cx="286" cy="228" r="66" fill="#ffffff" fill-opacity=".09"/>
+  <circle cx="64" cy="236" r="92" fill="#000000" fill-opacity=".06"/>
+  <g transform="translate(134 44) scale(5.5000)" fill="none" stroke="#ffffff" stroke-width="0.836" stroke-linecap="round" stroke-linejoin="round">
+    <path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 0 0 2.625.372 9.337 9.337 0 0 0 4.121-.952 4.125 4.125 0 0 0-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 0 1 8.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0 1 11.964-3.07M12 6.375a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0Zm8.25 2.25a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z"/>
+  </g>
+  <text x="24" y="234" fill="#ffffff" fill-opacity=".92" font-family="Inter, 'Segoe UI', system-ui, sans-serif" font-size="15" font-weight="700" letter-spacing="1.1">REHABILITASI &amp; FISIOTERAPI</text>
+</svg>

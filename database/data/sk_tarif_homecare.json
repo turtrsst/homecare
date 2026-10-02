@@ -1,0 +1,451 @@
+{
+    "_meta": {
+        "title": "Tarif Tindakan Pelayanan Home Care RSUP Dr. Soeradji Tirtonegoro Klaten",
+        "document": "Keputusan Direktur Utama RSUP Dr. Soeradji Tirtonegoro Klaten",
+        "number": "HK.02.03/D.XXVI/5441/2024",
+        "date": "2024-03-18",
+        "date_label": "18 Maret 2024",
+        "source_file": "SK TARIF TINDAKAN PELAYANAN HOME CARE NEW.pdf",
+        "rule": "Jasa Sarana + Jasa Pelayanan = Jumlah (price).",
+        "notes": [
+            "82 baris sesuai lampiran SK; dua baris kembar (REH-19, SEW-02) disimpan dengan is_active=false.",
+            "Nama, ejaan, dan tanda baca ditulis persis seperti pada lampiran SK."
+        ]
+    },
+    "categories": [
+        { "key": "medik", "label": "Tindakan Medik & Perawatan", "colors": ["#0f766e", "#14b8a6"] },
+        { "key": "lab", "label": "Pemeriksaan Laboratorium", "colors": ["#1d4ed8", "#3b82f6"] },
+        { "key": "rehab", "label": "Rehabilitasi & Fisioterapi", "colors": ["#6d28d9", "#8b5cf6"] },
+        { "key": "dokter", "label": "Kunjungan Dokter & Psikolog", "colors": ["#b45309", "#f59e0b"] },
+        { "key": "sewa", "label": "Sewa Alat Medik", "colors": ["#0369a1", "#0ea5e9"] }
+    ],
+    "services": [
+        {
+            "code": "MED-01", "name": "Pasang Catheter dan lepas Cateter", "category": "medik", "icon": "clipboard",
+            "short_description": "Pemasangan dan pelepasan kateter urine di rumah oleh perawat homecare.",
+            "description": "Pemasangan dan pelepasan kateter urine di rumah oleh perawat homecare.\n\nTermasuk pengecekan posisi kateter, perawatan area sekitarnya, dan edukasi keluarga tentang tanda infeksi yang perlu segera dilaporkan.",
+            "duration_minutes": 30, "jasa_sarana": 50000, "jasa_pelayanan": 100000
+        },
+        {
+            "code": "MED-02", "name": "Pasang NGT dan lepas NGT, sonde, Intubasi lambung", "category": "medik", "icon": "document",
+            "short_description": "Pemasangan dan pelepasan selang makan (NGT) beserta sonde lambung.",
+            "description": "Pemasangan dan pelepasan selang makan (NGT) beserta sonde lambung.\n\nPerawat memastikan posisi selang sebelum dipakai, lalu mengajari keluarga cara merawat, membersihkan, dan mengenali tanda penyumbatan.",
+            "duration_minutes": 30, "jasa_sarana": 30000, "jasa_pelayanan": 100000
+        },
+        {
+            "code": "MED-03", "name": "Spooeling", "category": "medik", "icon": "shield",
+            "short_description": "Tindakan spooling (irigasi) di rumah sesuai anjuran dokter.",
+            "duration_minutes": 30, "jasa_sarana": 20000, "jasa_pelayanan": 100000
+        },
+        {
+            "code": "MED-04", "name": "Spooeling dari suction telinga", "category": "medik", "icon": "stethoscope",
+            "short_description": "Irigasi dan suction telinga oleh perawat homecare.",
+            "duration_minutes": 30, "jasa_sarana": 30000, "jasa_pelayanan": 100000
+        },
+        {
+            "code": "MED-05", "name": "Spooling/irigasi", "category": "medik", "icon": "shield",
+            "short_description": "Irigasi ringan di rumah sesuai instruksi dokter.",
+            "duration_minutes": 30, "jasa_sarana": 5000, "jasa_pelayanan": 100000
+        },
+        {
+            "code": "MED-06", "name": "Spooling bola mata", "category": "medik", "icon": "stethoscope",
+            "short_description": "Irigasi atau pembilasan bola mata oleh perawat homecare.",
+            "duration_minutes": 30, "jasa_sarana": 20000, "jasa_pelayanan": 100000
+        },
+        {
+            "code": "MED-07", "name": "Pasang Infus", "category": "medik", "icon": "activity",
+            "short_description": "Pemasangan infus intravena di rumah oleh perawat homecare.",
+            "description": "Pemasangan infus intravena di rumah oleh perawat homecare.\n\nCairan dan obat mengikuti resep dokter; jalur infus dipantau selama pemasangan dan dilepas setelah tindakan selesai.",
+            "duration_minutes": 30, "jasa_sarana": 25000, "jasa_pelayanan": 100000, "is_featured": true
+        },
+        {
+            "code": "MED-08", "name": "Injeksi Intra Muskuler / Sub Cutan", "category": "medik", "icon": "activity",
+            "short_description": "Penyuntikan obat intramuskular atau subkutan sesuai resep dokter.",
+            "duration_minutes": 30, "jasa_sarana": 20000, "jasa_pelayanan": 100000
+        },
+        {
+            "code": "MED-09", "name": "Injeksi Intravena", "category": "medik", "icon": "activity",
+            "short_description": "Penyuntikan obat ke dalam pembuluh darah oleh perawat homecare.",
+            "duration_minutes": 30, "jasa_sarana": 20000, "jasa_pelayanan": 100000
+        },
+        {
+            "code": "MED-10", "name": "Nebuliser", "category": "medik", "icon": "heart",
+            "short_description": "Terapi inhalasi (nebulizer) di rumah untuk keluhan sesak atau batuk berdahak.",
+            "description": "Terapi inhalasi (nebulizer) di rumah untuk keluhan sesak atau batuk berdahak.\n\nDikerjakan perawat dengan alat nebulizer rumah sakit dan obat sesuai anjuran dokter.",
+            "duration_minutes": 30, "jasa_sarana": 10000, "jasa_pelayanan": 100000
+        },
+        {
+            "code": "MED-11", "name": "Perawatan luka kecil", "category": "medik", "icon": "shield",
+            "short_description": "Pembersihan luka kecil dan penggantian balutan di rumah.",
+            "duration_minutes": 30, "jasa_sarana": 20000, "jasa_pelayanan": 100000
+        },
+        {
+            "code": "MED-12", "name": "Perawatan luka / medikasi sedang", "category": "medik", "icon": "shield",
+            "short_description": "Perawatan luka sedang, termasuk medikasi dan penggantian balutan.",
+            "description": "Perawatan luka sedang, termasuk medikasi dan penggantian balutan.\n\nPerawat membersihkan luka, mengoleskan obat sesuai instruksi dokter, dan mencatat perkembangan luka pada rekam pelayanan.",
+            "duration_minutes": 45, "jasa_sarana": 30000, "jasa_pelayanan": 100000, "is_featured": true
+        },
+        {
+            "code": "MED-13", "name": "Perawatan Luka / medikasi Besar", "category": "medik", "icon": "shield",
+            "short_description": "Perawatan luka luas atau dalam oleh perawat wound care.",
+            "description": "Perawatan luka luas atau dalam oleh perawat wound care.\n\nMeliputi evaluasi dasar luka, pencucian, pemasangan balutan, dan pemantauan tanda infeksi antar kunjungan.",
+            "duration_minutes": 60, "jasa_sarana": 80000, "jasa_pelayanan": 100000
+        },
+        {
+            "code": "MED-14", "name": "Pijat bayi", "category": "medik", "icon": "heart",
+            "short_description": "Pijat bayi oleh bidan untuk relaksasi dan stimulasi tumbuh kembang.",
+            "description": "Pijat bayi oleh bidan untuk relaksasi dan stimulasi tumbuh kembang.\n\nLayanan berlangsung 30 menit dengan minyak yang telah disiapkan keluarga.",
+            "duration_minutes": 30, "jasa_sarana": 10000, "jasa_pelayanan": 100000,
+            "price_note": "Selama 30 menit", "is_featured": true
+        },
+        {
+            "code": "MED-15", "name": "Kunjungan Rohaniawan (doa, buku panduan, motivasi dan bimbingan ibadah pasien)", "category": "medik", "icon": "star",
+            "short_description": "Kunjungan rohaniwan: doa, motivasi, dan bimbingan ibadah pasien.",
+            "duration_minutes": 30, "jasa_sarana": 10000, "jasa_pelayanan": 100000
+        },
+        {
+            "code": "MED-16", "name": "Pendampingan nazak/ sakratul maut", "category": "medik", "icon": "heart",
+            "short_description": "Pendampingan pasien menjelang akhir hayat bersama keluarganya.",
+            "duration_minutes": 60, "jasa_sarana": 10000, "jasa_pelayanan": 100000
+        },
+        {
+            "code": "MED-17", "name": "Ru'yah penyakit rohani", "category": "medik", "icon": "star",
+            "short_description": "Layanan ru'yah untuk penyakit rohani sesuai permintaan keluarga.",
+            "duration_minutes": 30, "jasa_sarana": 10000, "jasa_pelayanan": 100000
+        },
+        {
+            "code": "MED-18", "name": "Pengambilan Darah Vena", "category": "medik", "icon": "activity",
+            "short_description": "Pengambilan sampel darah vena untuk pemeriksaan laboratorium.",
+            "description": "Pengambilan sampel darah vena untuk pemeriksaan laboratorium.\n\nSampel dibawa ke laboratorium rumah sakit dan hasilnya dapat dikonsultasikan dengan dokter.",
+            "duration_minutes": 30, "jasa_sarana": 20000, "jasa_pelayanan": 100000
+        },
+        {
+            "code": "MED-19", "name": "Pengambilan darah arteri", "category": "medik", "icon": "activity",
+            "short_description": "Pengambilan sampel darah arteri, misalnya untuk pemeriksaan gas darah.",
+            "duration_minutes": 30, "jasa_sarana": 20000, "jasa_pelayanan": 100000
+        },
+        {
+            "code": "MED-20", "name": "Tindik", "category": "medik", "icon": "plus",
+            "short_description": "Tindakan tindik sesuai indikasi medis oleh perawat homecare.",
+            "duration_minutes": 30, "jasa_sarana": 20000, "jasa_pelayanan": 100000
+        },
+        {
+            "code": "MED-21", "name": "Memandikan bayi", "category": "medik", "icon": "heart",
+            "short_description": "Memandikan bayi di rumah dengan teknik yang aman.",
+            "description": "Memandikan bayi di rumah dengan teknik yang aman.\n\nTermasuk perawatan lipatan kulit, pakaian, dan pemeriksaan ringan kondisi bayi.",
+            "duration_minutes": 30, "jasa_sarana": 37000, "jasa_pelayanan": 100000
+        },
+        {
+            "code": "MED-22", "name": "Perawatan tali pusat/medikasi ringan", "category": "medik", "icon": "shield",
+            "short_description": "Perawatan tali pusat dan medikasi ringan pada bayi baru lahir.",
+            "duration_minutes": 30, "jasa_sarana": 37000, "jasa_pelayanan": 100000
+        },
+        {
+            "code": "MED-23", "name": "Breast care", "category": "medik", "icon": "heart",
+            "short_description": "Perawatan payudara (breast care) untuk ibu menyusui.",
+            "duration_minutes": 30, "jasa_sarana": 37000, "jasa_pelayanan": 100000
+        },
+        {
+            "code": "MED-24", "name": "Perawatan perinium", "category": "medik", "icon": "shield",
+            "short_description": "Perawatan perineum ibu setelah persalinan.",
+            "duration_minutes": 30, "jasa_sarana": 37000, "jasa_pelayanan": 100000
+        },
+        {
+            "code": "MED-25", "name": "Jahit perineum ( derajat 1 )", "category": "medik", "icon": "clipboard",
+            "short_description": "Penjahitan perineum derajat 1 setelah persalinan.",
+            "duration_minutes": 45, "jasa_sarana": 40000, "jasa_pelayanan": 100000
+        },
+        {
+            "code": "MED-26", "name": "Jahit Perenium Derajat II", "category": "medik", "icon": "clipboard",
+            "short_description": "Penjahitan perineum derajat II setelah persalinan.",
+            "duration_minutes": 45, "jasa_sarana": 50000, "jasa_pelayanan": 100000
+        },
+        {
+            "code": "MED-27", "name": "Jahit perineum derajat III", "category": "medik", "icon": "clipboard",
+            "short_description": "Penjahitan perineum derajat III setelah persalinan.",
+            "duration_minutes": 45, "jasa_sarana": 60000, "jasa_pelayanan": 100000
+        },
+        {
+            "code": "LAB-01", "name": "GDS stik", "category": "lab", "icon": "chart",
+            "short_description": "Pemeriksaan gula darah sewaktu dengan stik di rumah.",
+            "duration_minutes": 30, "jasa_sarana": 20000, "jasa_pelayanan": 100000, "is_featured": true
+        },
+        {
+            "code": "LAB-02", "name": "Uric Acid/Asam Urat", "category": "lab", "icon": "chart",
+            "short_description": "Pemeriksaan asam urat (uric acid) dari sampel darah.",
+            "duration_minutes": 30, "jasa_sarana": 20000, "jasa_pelayanan": 100000
+        },
+        {
+            "code": "LAB-03", "name": "Cholesterol Total", "category": "lab", "icon": "chart",
+            "short_description": "Pemeriksaan kadar kolesterol total.",
+            "duration_minutes": 30, "jasa_sarana": 20000, "jasa_pelayanan": 100000
+        },
+        {
+            "code": "LAB-04", "name": "Darah Rutin (3 diff)", "category": "lab", "icon": "chart",
+            "short_description": "Pemeriksaan darah rutin lengkap dengan hitung jenis (3 diff).",
+            "duration_minutes": 30, "jasa_sarana": 20000, "jasa_pelayanan": 100000
+        },
+        {
+            "code": "LAB-05", "name": "SGOT", "category": "lab", "icon": "activity",
+            "short_description": "Pemeriksaan SGOT untuk menilai kondisi hati.",
+            "duration_minutes": 30, "jasa_sarana": 30000, "jasa_pelayanan": 100000
+        },
+        {
+            "code": "LAB-06", "name": "SGPT", "category": "lab", "icon": "activity",
+            "short_description": "Pemeriksaan SGPT untuk menilai kondisi hati.",
+            "duration_minutes": 30, "jasa_sarana": 30000, "jasa_pelayanan": 100000
+        },
+        {
+            "code": "LAB-07", "name": "Kultur", "category": "lab", "icon": "search",
+            "short_description": "Pengambilan sampel untuk pemeriksaan kultur kuman.",
+            "description": "Pengambilan sampel untuk pemeriksaan kultur kuman.\n\nSampel diambil di rumah lalu dikerjakan di laboratorium rumah sakit; hasil menyertai uji antibiogram.",
+            "duration_minutes": 30, "jasa_sarana": 518000, "jasa_pelayanan": 30000
+        },
+        {
+            "code": "REH-01", "name": "Low Level Laser Therapy", "category": "rehab", "icon": "sparkles",
+            "short_description": "Terapi laser level rendah (LLLT) untuk nyeri dan pemulihan jaringan.",
+            "duration_minutes": 60, "jasa_sarana": 20000, "jasa_pelayanan": 100000
+        },
+        {
+            "code": "REH-02", "name": "Injeksi Lokal Substansi Teurapeutik Ke Soft Tissue Lain (Dry Needling)", "category": "rehab", "icon": "plus",
+            "short_description": "Dry needling pada jaringan lunak untuk meredakan nyeri otot.",
+            "duration_minutes": 60, "jasa_sarana": 70000, "jasa_pelayanan": 100000
+        },
+        {
+            "code": "REH-03", "name": "Spray dan stretch", "category": "rehab", "icon": "activity",
+            "short_description": "Teknik spray and stretch untuk meredakan kekakuan otot.",
+            "duration_minutes": 60, "jasa_sarana": 50000, "jasa_pelayanan": 100000
+        },
+        {
+            "code": "REH-04", "name": "Uji Keseimbangan", "category": "rehab", "icon": "activity",
+            "short_description": "Asesmen keseimbangan tubuh untuk menilai risiko jatuh.",
+            "duration_minutes": 60, "jasa_sarana": 30000, "jasa_pelayanan": 100000
+        },
+        {
+            "code": "REH-05", "name": "Uji fungsi kekuatan otot kecil", "category": "rehab", "icon": "activity",
+            "short_description": "Pengukuran kekuatan otot kecil pada tangan atau kaki.",
+            "duration_minutes": 60, "jasa_sarana": 30000, "jasa_pelayanan": 100000
+        },
+        {
+            "code": "REH-06", "name": "Uji Fungsi pada Pasien Geriatri dengan Frailty", "category": "rehab", "icon": "chart",
+            "short_description": "Skrining fungsi pada pasien geriatri dengan risiko frailty.",
+            "duration_minutes": 60, "jasa_sarana": 30000, "jasa_pelayanan": 100000
+        },
+        {
+            "code": "REH-07", "name": "Uji Kondisi Psikologis Lansia", "category": "rehab", "icon": "user",
+            "short_description": "Uji kondisi psikologis lansia bersama psikolog.",
+            "duration_minutes": 60, "jasa_sarana": 35000, "jasa_pelayanan": 100000
+        },
+        {
+            "code": "REH-08", "name": "Uji/Skrining Paliatif", "category": "rehab", "icon": "clipboard",
+            "short_description": "Skrining kebutuhan paliatif untuk pasien dan keluarga.",
+            "duration_minutes": 60, "jasa_sarana": 35000, "jasa_pelayanan": 100000
+        },
+        {
+            "code": "REH-09", "name": "Uji Dekondisi", "category": "rehab", "icon": "activity",
+            "short_description": "Uji dekondisi untuk menilai penurunan kapasitas fisik pasien.",
+            "duration_minutes": 60, "jasa_sarana": 30000, "jasa_pelayanan": 100000
+        },
+        {
+            "code": "REH-10", "name": "Latihan ROM/stretching", "category": "rehab", "icon": "activity",
+            "short_description": "Latihan rentang gerak (ROM) dan peregangan sendi.",
+            "duration_minutes": 60, "jasa_sarana": 10000, "jasa_pelayanan": 100000, "is_featured": true
+        },
+        {
+            "code": "REH-11", "name": "Latihan resistif/penguatan", "category": "rehab", "icon": "activity",
+            "short_description": "Latihan penguatan otot dengan beban atau resistansi.",
+            "duration_minutes": 60, "jasa_sarana": 15000, "jasa_pelayanan": 100000
+        },
+        {
+            "code": "REH-12", "name": "Latihan ambulasi & keseimbangan", "category": "rehab", "icon": "activity",
+            "short_description": "Latihan berjalan dan keseimbangan bersama fisioterapis.",
+            "duration_minutes": 60, "jasa_sarana": 15000, "jasa_pelayanan": 100000
+        },
+        {
+            "code": "REH-13", "name": "Latihan jalan dengan (orthosis crutches, tripod, walker)", "category": "rehab", "icon": "activity",
+            "short_description": "Latihan berjalan dengan alat bantu: ortosis, kruk, tripod, atau walker.",
+            "duration_minutes": 60, "jasa_sarana": 15000, "jasa_pelayanan": 100000
+        },
+        {
+            "code": "REH-14", "name": "Latihan pernafasan", "category": "rehab", "icon": "heart",
+            "short_description": "Latihan pernapasan untuk memperkuat fungsi paru.",
+            "duration_minutes": 60, "jasa_sarana": 15000, "jasa_pelayanan": 100000
+        },
+        {
+            "code": "REH-15", "name": "Chest therapy dan postural drainage(", "category": "rehab", "icon": "heart",
+            "short_description": "Chest therapy dan postural drainage untuk mempermudah pengeluaran dahak.",
+            "duration_minutes": 60, "jasa_sarana": 15000, "jasa_pelayanan": 100000
+        },
+        {
+            "code": "REH-16", "name": "Latihan koordinasi khusus (NDT, FRANKEL, dll)", "category": "rehab", "icon": "activity",
+            "short_description": "Latihan koordinasi khusus seperti NDT dan Frankel.",
+            "duration_minutes": 60, "jasa_sarana": 15000, "jasa_pelayanan": 100000
+        },
+        {
+            "code": "REH-17", "name": "Manual terapi", "category": "rehab", "icon": "heart",
+            "short_description": "Manual terapi oleh fisioterapis untuk keluhan otot dan sendi.",
+            "duration_minutes": 60, "jasa_sarana": 15000, "jasa_pelayanan": 100000
+        },
+        {
+            "code": "REH-18", "name": "Terapi latihan lain (skoliosis, pelvic floor, dll)", "category": "rehab", "icon": "list",
+            "short_description": "Terapi latihan lain seperti skoliosis dan pelvic floor.",
+            "duration_minutes": 60, "jasa_sarana": 15000, "jasa_pelayanan": 100000
+        },
+        {
+            "code": "REH-19", "name": "Terapi latihan lain (skoliosis, pelvic floor, dll)", "category": "rehab", "icon": "list",
+            "short_description": "Terapi latihan lain seperti skoliosis dan pelvic floor.",
+            "duration_minutes": 60, "jasa_sarana": 15000, "jasa_pelayanan": 100000,
+            "is_active": false, "duplicate_of": "REH-18"
+        },
+        {
+            "code": "REH-20", "name": "Pasang Taping", "category": "rehab", "icon": "clipboard",
+            "short_description": "Pemasangan taping untuk menunjang otot dan sendi.",
+            "duration_minutes": 60, "jasa_sarana": 35000, "jasa_pelayanan": 100000
+        },
+        {
+            "code": "REH-21", "name": "Cold pack", "category": "rehab", "icon": "shield",
+            "short_description": "Kompres dingin (cold pack) untuk meredakan nyeri dan bengkak.",
+            "duration_minutes": 60, "jasa_sarana": 15000, "jasa_pelayanan": 100000
+        },
+        {
+            "code": "REH-22", "name": "Massage bayi & Massage local", "category": "rehab", "icon": "heart",
+            "short_description": "Pijat bayi dan pijat lokal untuk relaksasi otot.",
+            "duration_minutes": 60, "jasa_sarana": 20000, "jasa_pelayanan": 100000
+        },
+        {
+            "code": "REH-23", "name": "Latihan Koordinasi dan motoric", "category": "rehab", "icon": "activity",
+            "short_description": "Latihan koordinasi dan keterampilan motorik.",
+            "duration_minutes": 60, "jasa_sarana": 10000, "jasa_pelayanan": 100000
+        },
+        {
+            "code": "REH-24", "name": "Latihan gangguan kognisi & Persepsi", "category": "rehab", "icon": "question",
+            "short_description": "Latihan untuk gangguan kognisi dan persepsi.",
+            "duration_minutes": 60, "jasa_sarana": 15000, "jasa_pelayanan": 100000
+        },
+        {
+            "code": "REH-25", "name": "Latihan Perawatan diri ( Self Care ) & ADL", "category": "rehab", "icon": "user",
+            "short_description": "Latihan perawatan diri dan aktivitas sehari-hari (ADL).",
+            "duration_minutes": 60, "jasa_sarana": 15000, "jasa_pelayanan": 100000
+        },
+        {
+            "code": "REH-26", "name": "Terapi Perkembangan", "category": "rehab", "icon": "star",
+            "short_description": "Terapi perkembangan untuk stimulasi fungsi gerak.",
+            "duration_minutes": 60, "jasa_sarana": 15000, "jasa_pelayanan": 100000
+        },
+        {
+            "code": "REH-27", "name": "Energi Konservatif", "category": "rehab", "icon": "sparkles",
+            "short_description": "Latihan konservasi energi untuk menghemat tenaga pasien.",
+            "duration_minutes": 60, "jasa_sarana": 15000, "jasa_pelayanan": 100000
+        },
+        {
+            "code": "REH-28", "name": "Rehabilitasi paliatif", "category": "rehab", "icon": "heart",
+            "short_description": "Rehabilitasi paliatif untuk menjaga kualitas hidup pasien.",
+            "duration_minutes": 60, "jasa_sarana": 15000, "jasa_pelayanan": 100000
+        },
+        {
+            "code": "REH-29", "name": "Alat-alat adaptive", "category": "rehab", "icon": "list",
+            "short_description": "Penyuluhan dan pelatihan penggunaan alat bantu adaptif.",
+            "duration_minutes": 60, "jasa_sarana": 15000, "jasa_pelayanan": 100000
+        },
+        {
+            "code": "REH-30", "name": "PBM ( Proper Body Mechanic )", "category": "rehab", "icon": "shield",
+            "short_description": "Latihan postur dan proper body mechanic untuk mencegah cedera.",
+            "duration_minutes": 60, "jasa_sarana": 15000, "jasa_pelayanan": 100000
+        },
+        {
+            "code": "REH-31", "name": "Asesment OT", "category": "rehab", "icon": "clipboard",
+            "short_description": "Asesmen terapi okupansi untuk menilai kemampuan aktivitas harian.",
+            "duration_minutes": 60, "jasa_sarana": 15000, "jasa_pelayanan": 100000
+        },
+        {
+            "code": "REH-32", "name": "Psikoterapi Keluarga", "category": "rehab", "icon": "users",
+            "short_description": "Psikoterapi keluarga bersama psikolog.",
+            "duration_minutes": 60, "jasa_sarana": 15000, "jasa_pelayanan": 100000
+        },
+        {
+            "code": "REH-33", "name": "Psikoterapi Perilaku", "category": "rehab", "icon": "user",
+            "short_description": "Psikoterapi perilaku untuk mengubah pola pikir dan perilaku.",
+            "duration_minutes": 60, "jasa_sarana": 15000, "jasa_pelayanan": 100000
+        },
+        {
+            "code": "REH-34", "name": "Psikoterapi Supportif", "category": "rehab", "icon": "heart",
+            "short_description": "Psikoterapi supportif untuk penanganan masalah emosional.",
+            "duration_minutes": 60, "jasa_sarana": 15000, "jasa_pelayanan": 100000
+        },
+        {
+            "code": "REH-35", "name": "Psikoterapi Terpadu", "category": "rehab", "icon": "users",
+            "short_description": "Psikoterapi terpadu sesuai kebutuhan pasien.",
+            "duration_minutes": 60, "jasa_sarana": 15000, "jasa_pelayanan": 100000
+        },
+        {
+            "code": "REH-36", "name": "Psikoterapi Marital", "category": "rehab", "icon": "users",
+            "short_description": "Psikoterapi marital untuk pasangan suami istri.",
+            "duration_minutes": 60, "jasa_sarana": 15000, "jasa_pelayanan": 100000
+        },
+        {
+            "code": "REH-37", "name": "Asesment gangguan pada Lansia", "category": "rehab", "icon": "user",
+            "short_description": "Asesmen gangguan psikologis pada lansia.",
+            "duration_minutes": 60, "jasa_sarana": 15000, "jasa_pelayanan": 100000
+        },
+        {
+            "code": "REH-38", "name": "Assessment gangguan pada anak/Remaja", "category": "rehab", "icon": "user",
+            "short_description": "Asesmen gangguan psikologis pada anak dan remaja.",
+            "duration_minutes": 60, "jasa_sarana": 15000, "jasa_pelayanan": 100000
+        },
+        {
+            "code": "REH-39", "name": "TENS", "category": "rehab", "icon": "activity",
+            "short_description": "Terapi TENS untuk meredakan nyeri.",
+            "duration_minutes": 60, "jasa_sarana": 15000, "jasa_pelayanan": 100000
+        },
+        {
+            "code": "REH-40", "name": "Infra Red", "category": "rehab", "icon": "sparkles",
+            "short_description": "Terapi inframerah untuk meredakan nyeri otot dan sendi.",
+            "duration_minutes": 60, "jasa_sarana": 15000, "jasa_pelayanan": 100000
+        },
+        {
+            "code": "REH-41", "name": "Neuromuscular taping", "category": "rehab", "icon": "clipboard",
+            "short_description": "Pemasangan neuromuscular taping oleh terapis.",
+            "duration_minutes": 60, "jasa_sarana": 50000, "jasa_pelayanan": 80000
+        },
+        {
+            "code": "DOK-01", "name": "Visite dokter Umum", "category": "dokter", "icon": "stethoscope",
+            "short_description": "Kunjungan dokter umum ke rumah untuk pemeriksaan dan resep.",
+            "description": "Kunjungan dokter umum ke rumah untuk pemeriksaan dan resep.\n\nDokter memeriksa kondisi pasien, menegakkan diagnosis, dan menyusun tindak lanjut bila perlu.",
+            "duration_minutes": 60, "jasa_sarana": 25000, "jasa_pelayanan": 125000, "is_featured": true
+        },
+        {
+            "code": "DOK-02", "name": "Dokter Spesialis", "category": "dokter", "icon": "stethoscope",
+            "short_description": "Kunjungan dokter spesialis ke rumah sesuai kebutuhan pasien.",
+            "duration_minutes": 60, "jasa_sarana": 25000, "jasa_pelayanan": 200000
+        },
+        {
+            "code": "DOK-03", "name": "dokter Sub Spesialis", "category": "dokter", "icon": "stethoscope",
+            "short_description": "Kunjungan dokter sub spesialis ke rumah untuk penanganan lanjutan.",
+            "duration_minutes": 60, "jasa_sarana": 25000, "jasa_pelayanan": 250000
+        },
+        {
+            "code": "DOK-04", "name": "Konsultasi Psikologi", "category": "dokter", "icon": "users",
+            "short_description": "Konsultasi psikolog di rumah untuk keluhan emosional dan penyesuaian diri.",
+            "duration_minutes": 60, "jasa_sarana": 25000, "jasa_pelayanan": 100000
+        },
+        {
+            "code": "SEW-01", "name": "Sewa Tempat Tidur", "category": "sewa", "icon": "home",
+            "short_description": "Sewa tempat tidur pasien untuk perawatan di rumah.",
+            "description": "Sewa tempat tidur pasien untuk perawatan di rumah.\n\nSerah terima dan pemasangan alat dijelaskan kepada keluarga saat pengantaran.",
+            "duration_minutes": 15, "jasa_sarana": 24000, "jasa_pelayanan": 0, "price_note": "Per Hari"
+        },
+        {
+            "code": "SEW-02", "name": "Sewa Tempat Tidur", "category": "sewa", "icon": "home",
+            "short_description": "Sewa tempat tidur pasien untuk perawatan di rumah.",
+            "description": "Sewa tempat tidur pasien untuk perawatan di rumah.\n\nBaris kembar kedua pada lampiran SK — disimpan sebagai arsip tarif dan dinonaktifkan dari katalog.",
+            "duration_minutes": 15, "jasa_sarana": 24000, "jasa_pelayanan": 0, "price_note": "Per Hari",
+            "is_active": false, "duplicate_of": "SEW-01"
+        },
+        {
+            "code": "SEW-03", "name": "Sewa Oksigen konsentrator", "category": "sewa", "icon": "heart",
+            "short_description": "Sewa konsentrator oksigen untuk terapi oksigen di rumah.",
+            "description": "Sewa konsentrator oksigen untuk terapi oksigen di rumah.\n\nTermasuk serah terima alat dan penjelasan penggunaan yang aman kepada keluarga.",
+            "duration_minutes": 15, "jasa_sarana": 12000, "jasa_pelayanan": 0, "price_note": "Per Hari"
+        }
+    ]
+}

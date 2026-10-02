@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 260" width="400" height="260" role="img" aria-label="Psikoterapi Perilaku">
+  <title>Psikoterapi Perilaku</title>
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#6d28d9"/>
+      <stop offset="100%" stop-color="#8b5cf6"/>
+    </linearGradient>
+    <linearGradient id="sheen" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity=".22"/>
+      <stop offset="60%" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="260" fill="url(#g)"/>
+  <rect width="400" height="260" fill="url(#sheen)"/>
+  <circle cx="348" cy="34" r="104" fill="#ffffff" fill-opacity=".12"/>
+  <circle cx="286" cy="228" r="66" fill="#ffffff" fill-opacity=".09"/>
+  <circle cx="64" cy="236" r="92" fill="#000000" fill-opacity=".06"/>
+  <g transform="translate(134 44) scale(5.5000)" fill="none" stroke="#ffffff" stroke-width="0.836" stroke-linecap="round" stroke-linejoin="round">
+    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"/>
+  </g>
+  <text x="24" y="234" fill="#ffffff" fill-opacity=".92" font-family="Inter, 'Segoe UI', system-ui, sans-serif" font-size="15" font-weight="700" letter-spacing="1.1">REHABILITASI &amp; FISIOTERAPI</text>
+</svg>

@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 260" width="400" height="260" role="img" aria-label="Latihan gangguan kognisi &amp; Persepsi">
+  <title>Latihan gangguan kognisi &amp; Persepsi</title>
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#6d28d9"/>
+      <stop offset="100%" stop-color="#8b5cf6"/>
+    </linearGradient>
+    <linearGradient id="sheen" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity=".22"/>
+      <stop offset="60%" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="260" fill="url(#g)"/>
+  <rect width="400" height="260" fill="url(#sheen)"/>
+  <circle cx="348" cy="34" r="104" fill="#ffffff" fill-opacity=".12"/>
+  <circle cx="286" cy="228" r="66" fill="#ffffff" fill-opacity=".09"/>
+  <circle cx="64" cy="236" r="92" fill="#000000" fill-opacity=".06"/>
+  <g transform="translate(134 44) scale(5.5000)" fill="none" stroke="#ffffff" stroke-width="0.836" stroke-linecap="round" stroke-linejoin="round">
+    <path stroke-linecap="round" stroke-linejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 5.25h.008v.008H12v-.008Z"/>
+  </g>
+  <text x="24" y="234" fill="#ffffff" fill-opacity=".92" font-family="Inter, 'Segoe UI', system-ui, sans-serif" font-size="15" font-weight="700" letter-spacing="1.1">REHABILITASI &amp; FISIOTERAPI</text>
+</svg>
