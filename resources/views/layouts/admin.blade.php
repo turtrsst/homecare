@@ -1,115 +1,135 @@
-@extends('layouts.base')
+@extends('layouts.admin')
 
-@section('body')
-    @php
-        $user = auth()->user();
-        $nav = collect([
-            ['label' => 'Dashboard', 'route' => 'operasional.dashboard', 'match' => 'operasional.dashboard', 'icon' => 'home', 'gate' => null],
-            ['label' => 'Permintaan Homecare', 'route' => 'operasional.pengajuan.index', 'match' => 'operasional.pengajuan.*', 'icon' => 'clipboard', 'gate' => null],
-            ['label' => 'Jadwal & Kunjungan', 'route' => 'operasional.jadwal.index', 'match' => 'operasional.jadwal.*', 'icon' => 'calendar', 'gate' => null],
-            ['label' => 'Pasien', 'route' => 'operasional.pasien.index', 'match' => 'operasional.pasien.*', 'icon' => 'users', 'gate' => null],
-            ['label' => 'Layanan & Tarif', 'route' => 'operasional.layanan.index', 'match' => 'operasional.layanan.*', 'icon' => 'heart', 'gate' => 'services.manage'],
-            ['label' => 'Tenaga Kesehatan', 'route' => 'operasional.petugas.index', 'match' => 'operasional.petugas.*', 'icon' => 'stethoscope', 'gate' => 'staff.manage'],
-            ['label' => 'Laporan', 'route' => 'operasional.laporan.index', 'match' => 'operasional.laporan.*', 'icon' => 'chart', 'gate' => 'reports.view'],
-            ['label' => 'Audit Trail', 'route' => 'operasional.audit.index', 'match' => 'operasional.audit.*', 'icon' => 'shield', 'gate' => 'audit.view'],
-        ])->filter(fn ($item) => $item['gate'] === null || $user->can($item['gate']));
-    @endphp
+@section('title', 'Dashboard Operasional')
 
-    {{-- Sidebar terkunci penuh setinggi layar di desktop (CSS murni agar tidak tergantung hasil build Tailwind) --}}
-    @push('head')
-    <style>
-        @media (min-width: 1024px) {
-            .ops-shell { display: block; }
-            .ops-shell > aside.ops-sidebar {
-                position: fixed; top: 0; bottom: 0; left: 0;
-                width: 18rem; height: 100vh; z-index: 40;
-                display: flex; flex-direction: column;
-                transform: none; transition: none;
-            }
-            .ops-shell > div.ops-content { margin-left: 18rem; }
-        }
-    </style>
-    @endpush
+@section('content')
+    <div class="mb-6 flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
+        <div>
+            <p class="text-sm font-bold uppercase tracking-[0.18em] text-soeradji-600">Soeradji Care</p>
+            <h1 class="mt-2 text-2xl font-black text-stone-900 sm:text-3xl">Dashboard Operasional</h1>
+        </div>
+        <p class="text-sm text-stone-500">{{ now()->translatedFormat('l, j F Y') }} · Pantau antrean, jadwal, dan pelayanan rumah sakit.</p>
+    </div>
 
-    <div class="ops-shell min-h-screen lg:flex bg-stone-100" x-data="{ sidebar: false }">
-        {{-- Overlay drawer (mobile) --}}
-        <div x-show="sidebar" x-cloak x-on:click="sidebar = false" x-transition.opacity
-             class="fixed inset-0 bg-stone-900/50 z-40 lg:hidden"></div>
+    <div class="mb-8 grid gap-3 sm:grid-cols-2 xl:grid-cols-5">
+        <a href="{{ route('operasional.pengajuan.index', ['status' => 'submitted']) }}" class="stat-card block">
+            <div class="flex items-center justify-between">
+                <span class="text-[10px] font-bold uppercase tracking-[0.18em] text-stone-400">Verifikasi</span>
+                <span class="rounded-xl bg-amber-50 p-2 text-amber-600"><x-icon name="clipboard" class="h-4 w-4" /></span>
+            </div>
+            <p class="mt-4 text-3xl font-black text-stone-900">{{ $counts['menunggu_verifikasi'] }}</p>
+            <p class="mt-1 text-sm text-stone-500">menunggu</p>
+        </a>
 
-        {{-- Sidebar (desktop) / drawer (mobile) --}}
-        <aside class="ops-sidebar fixed inset-y-0 left-0 z-50 w-72 shrink-0 bg-stone-900 text-stone-300 flex flex-col transform -translate-x-full lg:translate-x-0 transition-transform duration-200 lg:static lg:z-auto"
-               :class="sidebar && 'translate-x-0'" aria-label="Menu operasional">
-                <div class="flex items-center justify-between px-5 h-16 border-b border-stone-800">
-                    <a href="{{ route('operasional.dashboard') }}" class="flex items-center gap-2.5">
-                        <span class="w-9 h-9 rounded-xl bg-brand-600 text-white flex items-center justify-center">
-                            <x-icon name="heart" class="w-5 h-5" />
-                        </span>
-                        <span class="leading-tight">
-                            <span class="block font-extrabold text-white text-sm">{{ config('app.name') }} Ops</span>
-                            <span class="block text-[10px] text-stone-400">{{ config('homecare.hospital_name') }}</span>
-                        </span>
-                    </a>
-                    <button type="button" x-on:click="sidebar = false" class="lg:hidden rounded-lg p-2 hover:bg-stone-800" aria-label="Tutup menu">
-                        <x-icon name="x" class="w-5 h-5" />
-                    </button>
-                </div>
+        <a href="{{ route('operasional.pengajuan.index', ['status' => 'approved']) }}" class="stat-card block">
+            <div class="flex items-center justify-between">
+                <span class="text-[10px] font-bold uppercase tracking-[0.18em] text-stone-400">Tindak lanjut</span>
+                <span class="rounded-xl bg-rose-50 p-2 text-rose-600"><x-icon name="alert" class="h-4 w-4" /></span>
+            </div>
+            <p class="mt-4 text-3xl font-black text-stone-900">{{ $counts['perlu_tindak_lanjut'] }}</p>
+            <p class="mt-1 text-sm text-stone-500">perlu perhatian</p>
+        </a>
 
-                <nav class="flex-1 overflow-y-auto py-4 px-3 space-y-1">
-                    @foreach ($nav as $item)
-                        <a href="{{ route($item['route']) }}"
-                           class="flex items-center gap-3 rounded-xl px-3.5 py-2.5 text-sm font-semibold transition min-h-11
-                                  {{ request()->routeIs($item['match']) ? 'bg-brand-600 text-white shadow-sm' : 'text-stone-400 hover:text-white hover:bg-stone-800' }}"
-                           @if(request()->routeIs($item['match'])) aria-current="page" @endif>
-                            <x-icon :name="$item['icon']" class="w-5 h-5 shrink-0" />
-                            {{ $item['label'] }}
+        <a href="{{ route('operasional.jadwal.index') }}" class="stat-card block">
+            <div class="flex items-center justify-between">
+                <span class="text-[10px] font-bold uppercase tracking-[0.18em] text-stone-400">Jadwal</span>
+                <span class="rounded-xl bg-soeradji-50 p-2 text-soeradji-600"><x-icon name="calendar" class="h-4 w-4" /></span>
+            </div>
+            <p class="mt-4 text-3xl font-black text-stone-900">{{ $counts['terjadwal_hari_ini'] }}</p>
+            <p class="mt-1 text-sm text-stone-500">hari ini</p>
+        </a>
+
+        <div class="stat-card">
+            <div class="flex items-center justify-between">
+                <span class="text-[10px] font-bold uppercase tracking-[0.18em] text-stone-400">Berjalan</span>
+                <span class="rounded-xl bg-medical-50 p-2 text-medical-600"><x-icon name="activity" class="h-4 w-4" /></span>
+            </div>
+            <p class="mt-4 text-3xl font-black text-stone-900">{{ $counts['sedang_berlangsung'] }}</p>
+            <p class="mt-1 text-sm text-stone-500">sedang dilayani</p>
+        </div>
+
+        <div class="stat-card">
+            <div class="flex items-center justify-between">
+                <span class="text-[10px] font-bold uppercase tracking-[0.18em] text-stone-400">Selesai</span>
+                <span class="rounded-xl bg-emerald-50 p-2 text-emerald-600"><x-icon name="check" class="h-4 w-4" /></span>
+            </div>
+            <p class="mt-4 text-3xl font-black text-stone-900">{{ $counts['selesai_hari_ini'] }}</p>
+            <p class="mt-1 text-sm text-stone-500">hari ini</p>
+        </div>
+    </div>
+
+    <div class="grid gap-5 lg:grid-cols-2">
+        <section aria-labelledby="queue-heading">
+            <div class="mb-3 flex items-center justify-between">
+                <h2 id="queue-heading" class="text-sm font-bold uppercase tracking-[0.18em] text-stone-400">Antrean kerja</h2>
+                <a href="{{ route('operasional.pengajuan.index') }}" class="text-xs font-bold text-soeradji-700 hover:text-soeradji-800">Semua →</a>
+            </div>
+
+            @if ($queue->isEmpty())
+                <x-card :padding="false">
+                    <x-empty-state icon="check" title="Antrean kosong 🎉">
+                        Semua pengajuan sudah ditindaklanjuti.
+                    </x-empty-state>
+                </x-card>
+            @else
+                <div class="space-y-3">
+                    @foreach ($queue as $request)
+                        <a href="{{ route('operasional.pengajuan.show', $request->code) }}"
+                           class="block rounded-[24px] border border-stone-200 bg-white p-4 shadow-soft transition hover:border-soeradji-200 hover:shadow-pop">
+                            <div class="flex items-start justify-between gap-3">
+                                <div class="min-w-0">
+                                    <p class="truncate text-base font-black text-stone-900">{{ $request->patient->name }}</p>
+                                    <p class="mt-1 truncate text-xs text-stone-500">
+                                        {{ $request->code }} · {{ $request->items->pluck('service_name')->unique()->implode(', ') }}
+                                    </p>
+                                </div>
+                                <x-status-badge :status="$request->status" />
+                            </div>
+                            <div class="mt-3 flex items-center justify-between text-xs text-stone-500">
+                                <span>{{ $request->submitted_at?->diffForHumans() }}</span>
+                                <span class="font-semibold text-stone-600">oleh {{ $request->user->name }}</span>
+                            </div>
                         </a>
                     @endforeach
-                </nav>
-
-                <div class="p-4 border-t border-stone-800">
-                    <div class="flex items-center gap-3">
-                        <span class="w-9 h-9 rounded-full bg-stone-700 text-white flex items-center justify-center font-bold text-sm">
-                            {{ mb_substr($user->name, 0, 1) }}
-                        </span>
-                        <div class="min-w-0 flex-1">
-                            <p class="text-sm font-bold text-white truncate">{{ $user->name }}</p>
-                            <p class="text-xs text-stone-500 truncate">{{ $user->role->label() }}</p>
-                        </div>
-                    </div>
-                    <form method="POST" action="{{ route('logout') }}" class="mt-3">
-                        @csrf
-                        <button type="submit" class="w-full flex items-center justify-center gap-2 rounded-xl bg-stone-800 hover:bg-stone-700 text-stone-300 text-sm font-semibold py-2.5 transition min-h-11">
-                            <x-icon name="logout" class="w-4.5 h-4.5" /> Keluar
-                        </button>
-                    </form>
                 </div>
-            </aside>
+            @endif
+        </section>
 
-        {{-- Konten --}}
-        <div class="ops-content flex-1 min-w-0 flex flex-col">
-            <header class="sticky top-0 z-30 bg-white/90 backdrop-blur border-b border-stone-200 lg:hidden">
-                <div class="flex items-center justify-between h-14 px-4">
-                    <button type="button" x-on:click="sidebar = true" class="rounded-xl p-2.5 text-stone-600 hover:bg-stone-100" aria-label="Buka menu">
-                        <x-icon name="menu" class="w-6 h-6" />
-                    </button>
-                    <span class="font-extrabold text-stone-900 text-sm">{{ config('app.name') }} Ops</span>
-                    @php $adminUnread = $user->unreadNotifications()->limit(50)->count(); @endphp
-                    <a href="{{ route('akun.notifikasi.index') }}" class="relative rounded-xl p-2.5 text-stone-500 hover:bg-stone-100" aria-label="Notifikasi">
-                        <x-icon name="bell" class="w-5 h-5" />
-                        @if ($adminUnread > 0)
-                            <span class="absolute top-1 right-1 min-w-4 h-4 px-1 rounded-full bg-rose-500 text-white text-[10px] font-bold flex items-center justify-center">
-                                {{ $adminUnread > 9 ? '9+' : $adminUnread }}
-                            </span>
-                        @endif
-                    </a>
-                </div>
-            </header>
+        <section aria-labelledby="today-heading">
+            <div class="mb-3 flex items-center justify-between">
+                <h2 id="today-heading" class="text-sm font-bold uppercase tracking-[0.18em] text-stone-400">Kunjungan hari ini</h2>
+                <a href="{{ route('operasional.jadwal.index') }}" class="text-xs font-bold text-soeradji-700 hover:text-soeradji-800">Jadwal →</a>
+            </div>
 
-            <main class="flex-1 p-4 sm:p-6 lg:p-8">
-                <div class="max-w-7xl mx-auto">
-                    @yield('content')
+            @if ($todayAppointments->isEmpty())
+                <x-card :padding="false">
+                    <x-empty-state icon="calendar" title="Tidak ada kunjungan hari ini">
+                        Terbitkan jadwal dari pengajuan yang sudah disetujui.
+                    </x-empty-state>
+                </x-card>
+            @else
+                <div class="space-y-3">
+                    @foreach ($todayAppointments as $appointment)
+                        <a href="{{ route('operasional.jadwal.show', $appointment) }}"
+                           class="flex items-center gap-4 rounded-[24px] border border-stone-200 bg-white p-4 shadow-soft transition hover:border-soeradji-200 hover:shadow-pop">
+                            <div class="w-14 shrink-0 rounded-2xl bg-soeradji-50 p-2 text-center ring-1 ring-soeradji-100">
+                                <p class="text-sm font-black text-stone-900">{{ $appointment->scheduled_at->format('H.i') }}</p>
+                                <p class="text-[10px] font-bold uppercase text-stone-400">WIB</p>
+                            </div>
+                            <div class="min-w-0 flex-1">
+                                <p class="truncate text-base font-black text-stone-900">{{ $appointment->request->patient->name }}</p>
+                                <p class="mt-1 truncate text-xs text-stone-500">
+                                    {{ $appointment->request->code }}
+                                    @if ($appointment->assignments->isNotEmpty())
+                                        · {{ $appointment->assignments->whereNotIn('status', ['cancelled'])->pluck('staff.name')->implode(', ') }}
+                                    @endif
+                                </p>
+                            </div>
+                            <x-status-badge :status="$appointment->status" />
+                        </a>
+                    @endforeach
                 </div>
-            </main>
-        </div>
+            @endif
+        </section>
     </div>
 @endsection
