@@ -1,135 +1,125 @@
-@extends('layouts.admin')
+@import 'tailwindcss';
 
-@section('title', 'Dashboard Operasional')
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source './../**/*.blade.php';
 
-@section('content')
-    <div class="mb-6 flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
-        <div>
-            <p class="text-sm font-bold uppercase tracking-[0.18em] text-soeradji-600">Soeradji Care</p>
-            <h1 class="mt-2 text-2xl font-black text-stone-900 sm:text-3xl">Dashboard Operasional</h1>
-        </div>
-        <p class="text-sm text-stone-500">{{ now()->translatedFormat('l, j F Y') }} · Pantau antrean, jadwal, dan pelayanan rumah sakit.</p>
-    </div>
+@theme {
+    --font-sans: 'Inter', 'Segoe UI', sans-serif;
 
-    <div class="mb-8 grid gap-3 sm:grid-cols-2 xl:grid-cols-5">
-        <a href="{{ route('operasional.pengajuan.index', ['status' => 'submitted']) }}" class="stat-card block">
-            <div class="flex items-center justify-between">
-                <span class="text-[10px] font-bold uppercase tracking-[0.18em] text-stone-400">Verifikasi</span>
-                <span class="rounded-xl bg-amber-50 p-2 text-amber-600"><x-icon name="clipboard" class="h-4 w-4" /></span>
-            </div>
-            <p class="mt-4 text-3xl font-black text-stone-900">{{ $counts['menunggu_verifikasi'] }}</p>
-            <p class="mt-1 text-sm text-stone-500">menunggu</p>
-        </a>
+    --color-soeradji-50: #eef7ff;
+    --color-soeradji-100: #dceeff;
+    --color-soeradji-200: #bfdfff;
+    --color-soeradji-300: #8ec4ff;
+    --color-soeradji-400: #5aa1f5;
+    --color-soeradji-500: #2f7ae5;
+    --color-soeradji-600: #1f5fc2;
+    --color-soeradji-700: #1a4f9a;
+    --color-soeradji-800: #174380;
+    --color-soeradji-900: #15396a;
 
-        <a href="{{ route('operasional.pengajuan.index', ['status' => 'approved']) }}" class="stat-card block">
-            <div class="flex items-center justify-between">
-                <span class="text-[10px] font-bold uppercase tracking-[0.18em] text-stone-400">Tindak lanjut</span>
-                <span class="rounded-xl bg-rose-50 p-2 text-rose-600"><x-icon name="alert" class="h-4 w-4" /></span>
-            </div>
-            <p class="mt-4 text-3xl font-black text-stone-900">{{ $counts['perlu_tindak_lanjut'] }}</p>
-            <p class="mt-1 text-sm text-stone-500">perlu perhatian</p>
-        </a>
+    --color-medical-50: #ecfdf5;
+    --color-medical-100: #d1fae5;
+    --color-medical-200: #a7f3d0;
+    --color-medical-300: #6ee7b7;
+    --color-medical-400: #34d399;
+    --color-medical-500: #10b981;
+    --color-medical-600: #059669;
+    --color-medical-700: #047857;
+    --color-medical-800: #065f46;
+    --color-medical-900: #064e3b;
 
-        <a href="{{ route('operasional.jadwal.index') }}" class="stat-card block">
-            <div class="flex items-center justify-between">
-                <span class="text-[10px] font-bold uppercase tracking-[0.18em] text-stone-400">Jadwal</span>
-                <span class="rounded-xl bg-soeradji-50 p-2 text-soeradji-600"><x-icon name="calendar" class="h-4 w-4" /></span>
-            </div>
-            <p class="mt-4 text-3xl font-black text-stone-900">{{ $counts['terjadwal_hari_ini'] }}</p>
-            <p class="mt-1 text-sm text-stone-500">hari ini</p>
-        </a>
+    --color-clinic-50: #f7fafc;
+    --color-clinic-100: #edf3f8;
+    --color-clinic-200: #dfeaf3;
+    --color-clinic-300: #c7d8e6;
+    --color-clinic-400: #8cadc7;
+    --color-clinic-500: #628ca9;
+    --color-clinic-600: #446f8d;
+    --color-clinic-700: #2f5675;
+    --color-clinic-800: #264861;
+    --color-clinic-900: #203d53;
 
-        <div class="stat-card">
-            <div class="flex items-center justify-between">
-                <span class="text-[10px] font-bold uppercase tracking-[0.18em] text-stone-400">Berjalan</span>
-                <span class="rounded-xl bg-medical-50 p-2 text-medical-600"><x-icon name="activity" class="h-4 w-4" /></span>
-            </div>
-            <p class="mt-4 text-3xl font-black text-stone-900">{{ $counts['sedang_berlangsung'] }}</p>
-            <p class="mt-1 text-sm text-stone-500">sedang dilayani</p>
-        </div>
+    --color-sand-50: #f8f5f2;
+    --color-sand-100: #f2ece4;
+    --color-sand-200: #e8dcc9;
 
-        <div class="stat-card">
-            <div class="flex items-center justify-between">
-                <span class="text-[10px] font-bold uppercase tracking-[0.18em] text-stone-400">Selesai</span>
-                <span class="rounded-xl bg-emerald-50 p-2 text-emerald-600"><x-icon name="check" class="h-4 w-4" /></span>
-            </div>
-            <p class="mt-4 text-3xl font-black text-stone-900">{{ $counts['selesai_hari_ini'] }}</p>
-            <p class="mt-1 text-sm text-stone-500">hari ini</p>
-        </div>
-    </div>
+    --shadow-soft: 0 12px 36px rgba(18, 39, 66, 0.08);
+    --shadow-pop: 0 22px 48px rgba(23, 55, 89, 0.14);
+}
 
-    <div class="grid gap-5 lg:grid-cols-2">
-        <section aria-labelledby="queue-heading">
-            <div class="mb-3 flex items-center justify-between">
-                <h2 id="queue-heading" class="text-sm font-bold uppercase tracking-[0.18em] text-stone-400">Antrean kerja</h2>
-                <a href="{{ route('operasional.pengajuan.index') }}" class="text-xs font-bold text-soeradji-700 hover:text-soeradji-800">Semua →</a>
-            </div>
+@layer base {
+    html {
+        scroll-behavior: smooth;
+        -webkit-text-size-adjust: 100%;
+    }
 
-            @if ($queue->isEmpty())
-                <x-card :padding="false">
-                    <x-empty-state icon="check" title="Antrean kosong 🎉">
-                        Semua pengajuan sudah ditindaklanjuti.
-                    </x-empty-state>
-                </x-card>
-            @else
-                <div class="space-y-3">
-                    @foreach ($queue as $request)
-                        <a href="{{ route('operasional.pengajuan.show', $request->code) }}"
-                           class="block rounded-[24px] border border-stone-200 bg-white p-4 shadow-soft transition hover:border-soeradji-200 hover:shadow-pop">
-                            <div class="flex items-start justify-between gap-3">
-                                <div class="min-w-0">
-                                    <p class="truncate text-base font-black text-stone-900">{{ $request->patient->name }}</p>
-                                    <p class="mt-1 truncate text-xs text-stone-500">
-                                        {{ $request->code }} · {{ $request->items->pluck('service_name')->unique()->implode(', ') }}
-                                    </p>
-                                </div>
-                                <x-status-badge :status="$request->status" />
-                            </div>
-                            <div class="mt-3 flex items-center justify-between text-xs text-stone-500">
-                                <span>{{ $request->submitted_at?->diffForHumans() }}</span>
-                                <span class="font-semibold text-stone-600">oleh {{ $request->user->name }}</span>
-                            </div>
-                        </a>
-                    @endforeach
-                </div>
-            @endif
-        </section>
+    body {
+        @apply bg-sand-50 text-clinic-900 antialiased;
+        font-feature-settings: 'cv02', 'cv03', 'cv04';
+    }
 
-        <section aria-labelledby="today-heading">
-            <div class="mb-3 flex items-center justify-between">
-                <h2 id="today-heading" class="text-sm font-bold uppercase tracking-[0.18em] text-stone-400">Kunjungan hari ini</h2>
-                <a href="{{ route('operasional.jadwal.index') }}" class="text-xs font-bold text-soeradji-700 hover:text-soeradji-800">Jadwal →</a>
-            </div>
+    h1, h2, h3, h4, h5, h6 {
+        @apply tracking-tight text-clinic-900;
+        text-wrap: balance;
+    }
 
-            @if ($todayAppointments->isEmpty())
-                <x-card :padding="false">
-                    <x-empty-state icon="calendar" title="Tidak ada kunjungan hari ini">
-                        Terbitkan jadwal dari pengajuan yang sudah disetujui.
-                    </x-empty-state>
-                </x-card>
-            @else
-                <div class="space-y-3">
-                    @foreach ($todayAppointments as $appointment)
-                        <a href="{{ route('operasional.jadwal.show', $appointment) }}"
-                           class="flex items-center gap-4 rounded-[24px] border border-stone-200 bg-white p-4 shadow-soft transition hover:border-soeradji-200 hover:shadow-pop">
-                            <div class="w-14 shrink-0 rounded-2xl bg-soeradji-50 p-2 text-center ring-1 ring-soeradji-100">
-                                <p class="text-sm font-black text-stone-900">{{ $appointment->scheduled_at->format('H.i') }}</p>
-                                <p class="text-[10px] font-bold uppercase text-stone-400">WIB</p>
-                            </div>
-                            <div class="min-w-0 flex-1">
-                                <p class="truncate text-base font-black text-stone-900">{{ $appointment->request->patient->name }}</p>
-                                <p class="mt-1 truncate text-xs text-stone-500">
-                                    {{ $appointment->request->code }}
-                                    @if ($appointment->assignments->isNotEmpty())
-                                        · {{ $appointment->assignments->whereNotIn('status', ['cancelled'])->pluck('staff.name')->implode(', ') }}
-                                    @endif
-                                </p>
-                            </div>
-                            <x-status-badge :status="$appointment->status" />
-                        </a>
-                    @endforeach
-                </div>
-            @endif
-        </section>
-    </div>
-@endsection
+    :focus-visible {
+        @apply outline-2 outline-offset-2 outline-soeradji-600;
+    }
+
+    button, [role='button'], input[type='submit'] {
+        min-height: 2.75rem;
+    }
+}
+
+@layer components {
+    .container-app {
+        @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
+    }
+
+    .container-narrow {
+        @apply mx-auto w-full max-w-3xl px-4 sm:px-6;
+    }
+
+    .brand-badge {
+        @apply inline-flex items-center gap-2 rounded-full border border-soeradji-200 bg-soeradji-50 px-3 py-1.5 text-xs font-bold text-soeradji-700;
+    }
+
+    .stat-card {
+        @apply rounded-[24px] border border-stone-200 bg-white p-4 shadow-soft;
+    }
+
+    .shadow-panel {
+        box-shadow: var(--shadow-pop);
+    }
+
+    .service-card-hover {
+        transition: all 0.25s ease;
+    }
+
+    .service-card-hover:hover {
+        transform: translateY(-4px);
+        box-shadow: var(--shadow-soft);
+    }
+}
+
+@keyframes shimmer {
+    100% { transform: translateX(100%); }
+}
+
+.skeleton {
+    @apply relative overflow-hidden rounded-xl bg-clinic-100;
+}
+
+.skeleton::after {
+    content: '';
+    @apply absolute inset-0;
+    transform: translateX(-100%);
+    background-image: linear-gradient(90deg, transparent, rgba(255,255,255,0.55), transparent);
+    animation: shimmer 1.4s infinite;
+}
+
+[x-cloak] {
+    display: none !important;
+}

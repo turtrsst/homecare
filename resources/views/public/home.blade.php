@@ -1,299 +1,212 @@
-@extends('layouts.public')
+@extends('layouts.app')
 
-@section('title', 'Layanan Kesehatan di Rumah, Lebih Mudah')
+@section('title', 'Dashboard')
 
 @section('content')
-    {{-- ================= HERO ================= --}}
-    <section class="relative overflow-hidden bg-gradient-to-b from-brand-50 via-white to-white">
-        <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
-            <div class="absolute -top-32 -right-32 w-96 h-96 rounded-full bg-brand-100/50 blur-3xl"></div>
-            <div class="absolute top-40 -left-24 w-72 h-72 rounded-full bg-warm-100/40 blur-3xl"></div>
-        </div>
-
-        <div class="container-app relative py-14 sm:py-20 lg:py-24">
-            <div class="grid lg:grid-cols-2 gap-12 items-center">
-                <div>
-                    <div class="inline-flex items-center gap-2 rounded-full bg-white ring-1 ring-brand-200 px-4 py-1.5 text-sm font-semibold text-brand-700 shadow-sm">
-                        <x-icon name="shield" class="w-4.5 h-4.5" />
-                        Layanan resmi {{ config('homecare.hospital_name') }}
-                    </div>
-
-                    <h1 class="mt-5 text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-[1.08] text-stone-900">
-                        Layanan Kesehatan di Rumah,
-                        <span class="text-brand-600">Lebih Mudah.</span>
-                    </h1>
-
-                    <p class="mt-5 text-lg sm:text-xl text-stone-600 leading-relaxed max-w-xl">
-                        Dapatkan pelayanan kesehatan dari tenaga profesional rumah sakit
-                        tanpa harus datang ke rumah sakit.
-                    </p>
-
-                    <div class="mt-8 flex flex-col sm:flex-row gap-3">
-                        <x-button :href="auth()->check() ? route('akun.pesan.step', 'pasien') : route('register')" size="lg" icon="plus" class="text-base">
-                            Pesan Homecare
-                        </x-button>
-                        <x-button :href="route('services.index')" size="lg" variant="secondary" icon="heart">
-                            Lihat Layanan
-                        </x-button>
-                    </div>
-
-                    <div class="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3 text-sm text-stone-500">
-                        <span class="flex items-center gap-2">
-                            <x-icon name="check-circle" class="w-5 h-5 text-brand-600" />
-                            Tenaga kesehatan bersertifikat
-                        </span>
-                        <span class="flex items-center gap-2">
-                            <x-icon name="check-circle" class="w-5 h-5 text-brand-600" />
-                            Status pesanan terpantau
-                        </span>
-                        <span class="flex items-center gap-2">
-                            <x-icon name="check-circle" class="w-5 h-5 text-brand-600" />
-                            Data Anda aman & privat
-                        </span>
-                    </div>
-                </div>
-
-                {{-- Kartu ilustrasi alur --}}
-                <div class="relative max-w-md mx-auto lg:mx-0 lg:ml-auto w-full" aria-hidden="true">
-                    <div class="absolute inset-0 bg-brand-600/10 rounded-[2.5rem] rotate-3"></div>
-                    <div class="relative bg-white rounded-[2rem] shadow-pop ring-1 ring-stone-200/60 p-6 space-y-4">
-                        <div class="flex items-center justify-between">
-                            <div>
-                                <p class="text-xs font-semibold text-stone-400 uppercase tracking-wide">Kunjungan berikutnya</p>
-                                <p class="font-extrabold text-stone-900 text-lg">Perawatan Luka</p>
-                            </div>
-                            <span class="inline-flex items-center gap-1.5 rounded-full bg-indigo-50 text-indigo-700 ring-1 ring-indigo-200 px-3 py-1 text-xs font-bold">
-                                <x-icon name="calendar" class="w-3.5 h-3.5" /> Terjadwal
-                            </span>
-                        </div>
-                        <div class="rounded-2xl bg-stone-50 ring-1 ring-stone-200/60 p-4 text-sm space-y-2.5">
-                            <p class="flex items-center gap-2.5 text-stone-600">
-                                <x-icon name="clock" class="w-4.5 h-4.5 text-brand-600 shrink-0" />
-                                Besok, 09.00 – 12.00 WIB
-                            </p>
-                            <p class="flex items-center gap-2.5 text-stone-600">
-                                <x-icon name="map-pin" class="w-4.5 h-4.5 text-brand-600 shrink-0" />
-                                Jl. Melati No. 12, Klaten
-                            </p>
-                            <p class="flex items-center gap-2.5 text-stone-600">
-                                <x-icon name="stethoscope" class="w-4.5 h-4.5 text-brand-600 shrink-0" />
-                                Ns. Siti Rahmawati · Perawat
-                            </p>
-                        </div>
-                        <div class="flex items-center gap-2">
-                            <span class="w-7 h-7 rounded-full bg-brand-600 text-white flex items-center justify-center">
-                                <x-icon name="check" class="w-4 h-4" />
-                            </span>
-                            <div class="flex-1 h-1.5 rounded-full bg-stone-100 overflow-hidden">
-                                <div class="h-full w-3/4 rounded-full bg-brand-500"></div>
-                            </div>
-                            <span class="text-xs font-semibold text-stone-400">Tahap 3/4</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            {{-- Peringatan kegawatdaruratan --}}
-            <div class="mt-12 max-w-3xl">
-                <x-emergency-banner />
-            </div>
-        </div>
-    </section>
-
-    {{-- ================= LAYANAN UNGGULAN ================= --}}
-    <section class="py-16 sm:py-20">
-        <div class="container-app">
-            <div class="flex flex-wrap items-end justify-between gap-4">
-                <x-section-heading
-                    title="Layanan Unggulan"
-                    subtitle="Pelayanan yang paling sering dibutuhkan keluarga Indonesia — dikerjakan oleh tenaga profesional rumah sakit." />
-                <a href="{{ route('services.index') }}" class="text-sm font-bold text-brand-700 hover:text-brand-800 flex items-center gap-1 shrink-0">
-                    Lihat semua layanan <x-icon name="chevron-right" class="w-4 h-4" />
-                </a>
-            </div>
-
-            <div class="mt-8 grid sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
-                @forelse ($featuredServices as $service)
-                    <x-service-card :service="$service" featured />
-                @empty
-                    @foreach ($services->take(4) as $service)
-                        <x-service-card :service="$service" />
-                    @endforeach
-                @endforelse
-            </div>
-        </div>
-    </section>
-
-    {{-- ================= CARA KERJA ================= --}}
-    <section class="py-16 sm:py-20 bg-white border-y border-stone-200/70">
-        <div class="container-app">
-            <x-section-heading align="center"
-                title="Cara Kerjanya Sederhana"
-                subtitle="Empat langkah tanpa ribet. Kami kabari Anda di setiap tahapnya." />
-
-            <div class="mt-12 grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
-                @foreach ([
-                    ['icon' => 'clipboard', 'title' => '1. Ajukan Kebutuhan', 'desc' => 'Ceritakan kondisi pasien dan pilih layanan dalam beberapa langkah singkat.'],
-                    ['icon' => 'check-circle', 'title' => '2. Kami Verifikasi', 'desc' => 'Tim homecare memeriksa pengajuan Anda dan memastikan layanan yang tepat.'],
-                    ['icon' => 'calendar', 'title' => '3. Jadwal & Petugas', 'desc' => 'Anda mendapat kepastian jadwal, nama petugas, dan rincian biaya.'],
-                    ['icon' => 'heart', 'title' => '4. Pelayanan di Rumah', 'desc' => 'Petugas datang tepat waktu, melayani dengan ramah, dan mendokumentasikan semuanya.'],
-                ] as $step)
-                    <div class="relative text-center sm:text-left">
-                        <div class="mx-auto sm:mx-0 w-14 h-14 rounded-2xl bg-brand-50 text-brand-600 flex items-center justify-center ring-1 ring-brand-100">
-                            <x-icon :name="$step['icon']" class="w-7 h-7" />
-                        </div>
-                        <h3 class="mt-4 font-bold text-stone-900">{{ $step['title'] }}</h3>
-                        <p class="mt-1.5 text-sm text-stone-500 leading-relaxed">{{ $step['desc'] }}</p>
-                    </div>
-                @endforeach
-            </div>
-
-            <div class="mt-12 text-center">
-                <x-button :href="route('how-it-works')" variant="soft" size="lg">
-                    Pelajari lebih detail
-                </x-button>
-            </div>
-        </div>
-    </section>
-
-    {{-- ================= MANFAAT ================= --}}
-    <section class="py-16 sm:py-20">
-        <div class="container-app grid lg:grid-cols-2 gap-12 items-center">
+    <div class="mb-6 space-y-4">
+        <div class="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
             <div>
-                <x-section-heading
-                    title="Kenapa Keluarga Memilih Homecare?"
-                    subtitle="Dirancang untuk mengurangi beban keluarga, bukan menambahnya." />
-
-                <ul class="mt-8 space-y-5">
-                    @foreach ([
-                        ['icon' => 'home', 'title' => 'Nyaman di rumah sendiri', 'desc' => 'Pemulihan sering kali lebih cepat dan tenang di lingkungan yang familiar.'],
-                        ['icon' => 'ambulance', 'title' => 'Tanpa antre & perjalanan', 'desc' => 'Tidak perlu menembus macet atau menunggu lama di rumah sakit — terutama untuk lansia dan pasien pasca-rawat inap.'],
-                        ['icon' => 'users', 'title' => 'Keluarga tetap bisa bekerja', 'desc' => 'Satu orang tidak perlu mengorbankan pekerjaan untuk mengantar berobat.'],
-                        ['icon' => 'info', 'title' => 'Semua jelas dan terpantau', 'desc' => 'Status pengajuan, jadwal, nama petugas, dan biaya terlihat transparan di satu tempat.'],
-                    ] as $benefit)
-                        <li class="flex gap-4">
-                            <div class="w-11 h-11 rounded-xl bg-white ring-1 ring-stone-200 text-brand-600 flex items-center justify-center shrink-0 shadow-sm">
-                                <x-icon :name="$benefit['icon']" class="w-5.5 h-5.5" />
-                            </div>
-                            <div>
-                                <h3 class="font-bold text-stone-900">{{ $benefit['title'] }}</h3>
-                                <p class="mt-0.5 text-sm text-stone-500 leading-relaxed">{{ $benefit['desc'] }}</p>
-                            </div>
-                        </li>
-                    @endforeach
-                </ul>
+                <p class="text-sm font-bold uppercase tracking-[0.18em] text-soeradji-600">Soeradji Care</p>
+                <h1 class="mt-2 text-2xl font-black text-stone-900 sm:text-3xl">
+                    Halo, {{ $user->firstName() }} 👋
+                </h1>
             </div>
 
-            {{-- Keamanan --}}
-            <div class="rounded-3xl bg-stone-900 text-white p-8 sm:p-10 shadow-pop">
-                <div class="w-12 h-12 rounded-2xl bg-brand-600 flex items-center justify-center">
-                    <x-icon name="shield" class="w-6 h-6" />
+            <a href="{{ route('akun.pesan.step', 'pasien') }}"
+               class="inline-flex items-center justify-center gap-2 rounded-2xl bg-soeradji-600 px-4 py-2.5 text-sm font-bold text-white shadow-lg shadow-soeradji-600/20 transition hover:bg-soeradji-700">
+                <x-icon name="plus" class="h-4 w-4" />
+                Pesan Homecare
+            </a>
+        </div>
+
+        <div class="rounded-[28px] bg-gradient-to-r from-soeradji-700 via-soeradji-600 to-medical-500 p-5 text-white shadow-pop sm:p-6">
+            <div class="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+                <div>
+                    <p class="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.18em] text-soeradji-50">
+                        <x-icon name="sparkles" class="h-3.5 w-3.5" />
+                        AI booking assistant
+                    </p>
+                    <h2 class="mt-3 text-2xl font-black leading-tight">Butuh layanan rumah sakit tanpa antre?</h2>
+                    <p class="mt-2 max-w-xl text-sm text-soeradji-50/90">
+                        Cukup ketik kebutuhan Anda, lalu sistem akan membantu menyusun pesanan dan jadwal yang paling cocok.
+                    </p>
                 </div>
-                <h3 class="mt-5 text-2xl font-extrabold">Data kesehatan Anda dijaga serius</h3>
-                <p class="mt-3 text-stone-300 leading-relaxed text-sm sm:text-base">
-                    Dokumen seperti KTP, surat rujukan, dan foto kondisi disimpan di penyimpanan privat
-                    yang tidak bisa diakses publik. Setiap akses dicatat, dan hanya pihak berwenang yang
-                    dapat melihatnya.
-                </p>
-                <ul class="mt-6 space-y-3 text-sm">
-                    @foreach ([
-                        'Dokumen disimpan di penyimpanan privat terenkripsi',
-                        'Akses dokumen tercatat di audit trail',
-                        'Petugas hanya melihat data pasien yang menjadi tugasnya',
-                        'Tidak ada penjualan data ke pihak ketiga',
-                    ] as $point)
-                        <li class="flex items-start gap-2.5 text-stone-200">
-                            <x-icon name="check" class="w-4.5 h-4.5 mt-0.5 text-brand-400 shrink-0" />
-                            {{ $point }}
-                        </li>
-                    @endforeach
-                </ul>
+
+                <div class="rounded-2xl border border-white/20 bg-white/10 p-3 backdrop-blur-sm">
+                    <p class="text-[10px] uppercase tracking-[0.2em] text-soeradji-100">contoh permintaan</p>
+                    <p class="mt-2 max-w-xs text-sm text-white">“Saya butuh perawatan luka untuk ibu, besok pagi di Klaten.”</p>
+                </div>
             </div>
         </div>
-    </section>
+    </div>
 
-    {{-- ================= TENAGA KESEHATAN ================= --}}
-    <section class="py-16 sm:py-20 bg-white border-y border-stone-200/70">
-        <div class="container-app">
-            <x-section-heading align="center"
-                title="Ditangani Tenaga Kesehatan Rumah Sakit"
-                subtitle="Dokter, perawat, bidan, fisioterapis, dan tenaga kesehatan lain yang terlatih serta memiliki izin praktik." />
+    <div class="mb-8 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+        <div class="stat-card">
+            <div class="flex items-center justify-between">
+                <span class="text-[10px] font-bold uppercase tracking-[0.14em] text-stone-400">Pengajuan</span>
+                <span class="rounded-xl bg-soeradji-50 p-2 text-soeradji-600">
+                    <x-icon name="clipboard" class="h-4 w-4" />
+                </span>
+            </div>
+            <p class="mt-4 text-3xl font-black text-stone-900">{{ $activeRequest ? 1 : 0 }}</p>
+            <p class="mt-1 text-sm text-stone-500">aktif</p>
+        </div>
 
-            <div class="mt-10 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
-                @foreach (\App\Enums\Profession::cases() as $profession)
-                    @if ($profession !== \App\Enums\Profession::Other)
-                        <div class="rounded-2xl ring-1 ring-stone-200/70 bg-stone-50 p-4 text-center">
-                            <div class="mx-auto w-10 h-10 rounded-xl bg-white text-brand-600 flex items-center justify-center shadow-sm ring-1 ring-stone-200/60">
-                                <x-icon name="stethoscope" class="w-5 h-5" />
-                            </div>
-                            <p class="mt-2.5 text-xs sm:text-sm font-bold text-stone-700">{{ $profession->label() }}</p>
+        <div class="stat-card">
+            <div class="flex items-center justify-between">
+                <span class="text-[10px] font-bold uppercase tracking-[0.14em] text-stone-400">Jadwal</span>
+                <span class="rounded-xl bg-medical-50 p-2 text-medical-600">
+                    <x-icon name="calendar" class="h-4 w-4" />
+                </span>
+            </div>
+            <p class="mt-4 text-3xl font-black text-stone-900">{{ $recentRequests->count() }}</p>
+            <p class="mt-1 text-sm text-stone-500">riwayat</p>
+        </div>
+
+        <div class="stat-card">
+            <div class="flex items-center justify-between">
+                <span class="text-[10px] font-bold uppercase tracking-[0.14em] text-stone-400">Status</span>
+                <span class="rounded-xl bg-amber-50 p-2 text-amber-600">
+                    <x-icon name="activity" class="h-4 w-4" />
+                </span>
+            </div>
+            <p class="mt-4 text-xl font-black text-stone-900">{{ $activeRequest?->status->label() ?? 'Kosong' }}</p>
+            <p class="mt-1 text-sm text-stone-500">terakhir</p>
+        </div>
+
+        <div class="stat-card">
+            <div class="flex items-center justify-between">
+                <span class="text-[10px] font-bold uppercase tracking-[0.14em] text-stone-400">Kebutuhan</span>
+                <span class="rounded-xl bg-rose-50 p-2 text-rose-600">
+                    <x-icon name="heart" class="h-4 w-4" />
+                </span>
+            </div>
+            <p class="mt-4 text-3xl font-black text-stone-900">{{ $services->count() }}</p>
+            <p class="mt-1 text-sm text-stone-500">layanan tersedia</p>
+        </div>
+    </div>
+
+    @if ($activeRequest)
+        <section class="mb-8" aria-labelledby="active-heading">
+            <div class="mb-3 flex items-center justify-between">
+                <h2 id="active-heading" class="text-sm font-bold uppercase tracking-[0.15em] text-stone-400">Pengajuan Anda</h2>
+                <a href="{{ route('akun.pengajuan.index') }}" class="text-xs font-bold text-soeradji-700 hover:text-soeradji-800">Lihat semua →</a>
+            </div>
+
+            <div class="overflow-hidden rounded-[28px] border border-stone-200 bg-white shadow-soft">
+                <div class="p-5 sm:p-6">
+                    <div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+                        <div class="min-w-0">
+                            <p class="text-xs font-bold uppercase tracking-[0.18em] text-soeradji-600">Status aktif</p>
+                            <h3 class="mt-2 text-xl font-black text-stone-900">
+                                {{ $activeRequest->items->pluck('service_name')->unique()->implode(', ') ?: 'Homecare' }}
+                            </h3>
+                            <p class="mt-1 text-sm text-stone-500">
+                                Untuk <span class="font-semibold text-stone-700">{{ $activeRequest->patient->name }}</span>
+                            </p>
+                        </div>
+                        <x-status-badge :status="$activeRequest->status" />
+                    </div>
+
+                    @if ($activeRequest->appointment)
+                        <div class="mt-5 rounded-2xl bg-soeradji-50 p-4 ring-1 ring-soeradji-100">
+                            <p class="flex items-center gap-2.5 text-sm font-bold text-soeradji-800">
+                                <x-icon name="calendar" class="h-5 w-5 text-soeradji-600" />
+                                {{ $activeRequest->appointment->scheduled_at->translatedFormat('l, j F Y') }}
+                                pukul {{ $activeRequest->appointment->scheduled_at->format('H.i') }} WIB
+                            </p>
+                            @php $primaryStaff = $activeRequest->appointment->primaryStaff(); @endphp
+                            @if ($primaryStaff)
+                                <p class="mt-2 flex items-center gap-2.5 text-sm text-soeradji-700">
+                                    <x-icon name="stethoscope" class="h-5 w-5 text-soeradji-600" />
+                                    <span><span class="font-bold">{{ $primaryStaff->name }}</span> · {{ $primaryStaff->profession->label() }}</span>
+                                </p>
+                            @endif
+                            <p class="mt-2 text-xs text-soeradji-700/80">
+                                {{ $activeRequest->appointment->status->patientLabel() }}
+                            </p>
+                        </div>
+                    @elseif ($activeRequest->status->value === 'need_information')
+                        <div class="mt-5 rounded-2xl bg-amber-50 p-4 text-sm text-amber-800 ring-1 ring-amber-200">
+                            <p class="flex items-center gap-2 font-bold">
+                                <x-icon name="alert" class="h-5 w-5" /> Kami butuh informasi tambahan
+                            </p>
+                            <p class="mt-1">{{ $activeRequest->information_request }}</p>
+                        </div>
+                    @else
+                        <div class="mt-5 rounded-2xl bg-stone-50 p-4 text-sm text-stone-600 ring-1 ring-stone-200">
+                            <p class="flex items-center gap-2">
+                                <x-icon name="clock" class="h-4 w-4" />
+                                {{ $activeRequest->status->patientLabel() }} — Anda akan dikabari begitu ada perkembangan.
+                            </p>
                         </div>
                     @endif
-                @endforeach
-            </div>
-        </div>
-    </section>
 
-    {{-- ================= FAQ RINGKAS ================= --}}
-    <section class="py-16 sm:py-20">
-        <div class="container-app max-w-3xl">
-            <x-section-heading align="center" title="Pertanyaan yang Sering Diajukan" />
-
-            <div class="mt-8 space-y-3" x-data="{ open: 0 }">
-                @foreach ([
-                    ['q' => 'Apakah ini layanan darurat?', 'a' => 'Bukan. Untuk kondisi gawat darurat, segera hubungi '.config('homecare.emergency_number').' atau IGD '.config('homecare.hospital_name').' di '.config('homecare.contact.phone').'.'],
-                    ['q' => 'Berapa lama proses verifikasi pengajuan?', 'a' => 'Pada jam kerja biasanya beberapa jam. Anda akan menerima notifikasi setiap status pengajuan berubah.'],
-                    ['q' => 'Bagaimana saya tahu siapa yang akan datang?', 'a' => 'Setelah jadwal ditetapkan, nama dan profesi petugas muncul di halaman detail pengajuan Anda.'],
-                    ['q' => 'Bisakah memesan untuk orang tua atau anak?', 'a' => 'Bisa. Satu akun dapat menyimpan beberapa profil pasien — diri sendiri maupun anggota keluarga.'],
-                ] as $index => $faq)
-                    <div class="rounded-2xl ring-1 ring-stone-200/70 bg-white overflow-hidden">
-                        <button type="button" x-on:click="open === {{ $index }} ? open = false : open = {{ $index }}"
-                                class="w-full flex items-center justify-between gap-4 px-5 py-4 text-left min-h-11"
-                                :aria-expanded="open === {{ $index }}" aria-controls="faq-home-{{ $index }}">
-                            <span class="font-bold text-stone-800 text-sm sm:text-base">{{ $faq['q'] }}</span>
-                            <x-icon name="chevron-down" class="w-5 h-5 text-stone-400 shrink-0 transition-transform" ::class="open === {{ $index }} && 'rotate-180'" />
-                        </button>
-                        <div x-show="open === {{ $index }}" x-collapse x-cloak id="faq-home-{{ $index }}">
-                            <p class="px-5 pb-4 text-sm text-stone-500 leading-relaxed">{{ $faq['a'] }}</p>
-                        </div>
-                    </div>
-                @endforeach
-            </div>
-
-            <p class="mt-6 text-center text-sm text-stone-500">
-                Masih ada pertanyaan?
-                <a href="{{ route('faq') }}" class="font-bold text-brand-700 hover:text-brand-800 underline underline-offset-2">Lihat semua FAQ</a>
-                atau <a href="{{ route('contact') }}" class="font-bold text-brand-700 hover:text-brand-800 underline underline-offset-2">hubungi kami</a>.
-            </p>
-        </div>
-    </section>
-
-    {{-- ================= CTA PENUTUP ================= --}}
-    <section class="pb-16 sm:pb-20">
-        <div class="container-app">
-            <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-brand-700 via-brand-600 to-teal-500 p-8 sm:p-14 text-center text-white shadow-pop">
-                <div class="absolute -top-20 -right-20 w-72 h-72 rounded-full bg-white/10 blur-2xl" aria-hidden="true"></div>
-                <div class="absolute -bottom-24 -left-16 w-80 h-80 rounded-full bg-brand-900/20 blur-2xl" aria-hidden="true"></div>
-
-                <div class="relative">
-                    <h2 class="text-3xl sm:text-4xl font-extrabold">Siap memesan layanan di rumah?</h2>
-                    <p class="mt-3 text-brand-50 max-w-xl mx-auto text-base sm:text-lg">
-                        Butuh beberapa menit saja. Tim kami akan segera menindaklanjuti dan memberi kabar.
-                    </p>
-                    <div class="mt-8 flex flex-col sm:flex-row justify-center gap-3">
-                        <x-button :href="auth()->check() ? route('akun.pesan.step', 'pasien') : route('register')"
-                                  size="lg"
-                                  class="bg-white text-brand-700 hover:bg-brand-50 shadow-pop">
-                            Pesan Homecare Sekarang
+                    <div class="mt-5">
+                        <x-button :href="route('akun.pengajuan.show', $activeRequest->code)" variant="soft" full>
+                            Lihat detail pengajuan
                         </x-button>
-                        <a href="tel:{{ config('homecare.contact.phone') }}"
-                           class="inline-flex items-center justify-center gap-2 rounded-xl px-7 min-h-12 py-3 text-base font-semibold text-white ring-1 ring-white/40 hover:bg-white/10 transition">
-                            <x-icon name="phone" class="w-5 h-5" />
-                            {{ config('homecare.contact.phone') }}
-                        </a>
                     </div>
                 </div>
             </div>
+        </section>
+    @endif
+
+    <section class="mb-8" aria-labelledby="services-heading">
+        <div class="mb-3 flex items-center justify-between">
+            <h2 id="services-heading" class="text-sm font-bold uppercase tracking-[0.15em] text-stone-400">Layanan kami</h2>
+            <a href="{{ route('services.index') }}" class="text-xs font-bold text-soeradji-700 hover:text-soeradji-800">Semua →</a>
         </div>
+
+        <div class="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+            @foreach ($services->take(6) as $service)
+                <a href="{{ route('akun.pesan.step', 'layanan') }}"
+                   class="service-card-hover rounded-[24px] border border-stone-200 bg-white p-4 shadow-soft hover:border-soeradji-200">
+                    <div class="flex items-center justify-between gap-3">
+                        <div class="h-12 w-12 overflow-hidden rounded-2xl bg-soeradji-50 ring-1 ring-soeradji-100">
+                            @if ($service->thumbnailUrl())
+                                <img src="{{ $service->thumbnailUrl() }}" alt="{{ $service->name }}" class="h-full w-full object-cover" loading="lazy">
+                            @else
+                                <div class="flex h-full w-full items-center justify-center text-soeradji-600">
+                                    <x-icon name="heart" class="h-5 w-5" />
+                                </div>
+                            @endif
+                        </div>
+                        <span class="rounded-full bg-medical-100 px-2 py-1 text-[10px] font-bold text-medical-700">Favorit</span>
+                    </div>
+
+                    <p class="mt-4 text-base font-black text-stone-900">{{ $service->name }}</p>
+                    <p class="mt-1 text-sm leading-relaxed text-stone-500">
+                        {{ $service->description ?? 'Pelayanan kesehatan di rumah yang sesuai kebutuhan Anda.' }}
+                    </p>
+                    <div class="mt-4 flex items-center justify-between">
+                        <span class="text-sm font-extrabold text-soeradji-700">{{ $service->formattedPrice() }}</span>
+                        <span class="text-xs font-bold text-soeradji-700">Lihat →</span>
+                    </div>
+                </a>
+            @endforeach
+        </div>
+    </section>
+
+    <section aria-labelledby="history-heading">
+        <div class="mb-3 flex items-center justify-between">
+            <h2 id="history-heading" class="text-sm font-bold uppercase tracking-[0.15em] text-stone-400">Riwayat</h2>
+            <a href="{{ route('akun.pengajuan.index') }}" class="text-xs font-bold text-soeradji-700 hover:text-soeradji-800">Lihat semua →</a>
+        </div>
+
+        @if ($recentRequests->isEmpty())
+            <x-card :padding="false">
+                <x-empty-state icon="clipboard" title="Belum ada riwayat Homecare"
+                               actionHref="{{ route('akun.pesan.step', 'pasien') }}" actionLabel="Pesan Homecare">
+                    Setelah Anda melakukan pemesanan, riwayatnya akan muncul di sini.
+                </x-empty-state>
+            </x-card>
+        @else
+            <div class="space-y-3">
+                @foreach ($recentRequests as $request)
+                    <x-request-card :request="$request" />
+                @endforeach
+            </div>
+        @endif
     </section>
 @endsection
