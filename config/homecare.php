@@ -1,13 +1,15 @@
 <?php
 
 return [
-
     /*
     |--------------------------------------------------------------------------
-    | Identitas Rumah Sakit
+    | Identitas rumah sakit dan branding publik
     |--------------------------------------------------------------------------
     */
+    'brand_name' => 'Soeradji Care',
     'hospital_name' => env('HOMECARE_HOSPITAL_NAME', 'RSUP Dr. Soeradji Tirtonegoro Klaten'),
+    'tagline' => 'Kesehatan di Rumah, Lebih Mudah.',
+    'logo_path' => '/images/soeradji-care-logo.svg',
     'emergency_number' => env('HOMECARE_EMERGENCY_NUMBER', '119'),
     'contact' => [
         'phone' => env('HOMECARE_CONTACT_PHONE', '(0272) 321020'),
@@ -17,28 +19,13 @@ return [
     ],
     'website' => env('HOMECARE_WEBSITE', 'https://rsupsoeradji.id'),
     'hours' => 'Senin–Jumat, 08.00–17.00 WIB (IGD 24 jam)',
-
-    /*
-    |--------------------------------------------------------------------------
-    | Aturan Penjadwalan
-    |--------------------------------------------------------------------------
-    | Tanggal pilihan pasien minimal H+min_lead_days dan maksimal
-    | H+max_advance_days. Slot waktu disajikan dengan bahasa sederhana.
-    */
     'min_lead_days' => (int) env('HOMECARE_MIN_LEAD_DAYS', 1),
     'max_advance_days' => (int) env('HOMECARE_MAX_ADVANCE_DAYS', 30),
-
     'time_windows' => [
         'morning' => ['label' => 'Pagi (08.00 – 12.00)', 'start' => '08:00', 'end' => '12:00'],
         'midday' => ['label' => 'Siang (12.00 – 16.00)', 'start' => '12:00', 'end' => '16:00'],
         'afternoon' => ['label' => 'Sore (16.00 – 20.00)', 'start' => '16:00', 'end' => '20:00'],
     ],
-
-    /*
-    |--------------------------------------------------------------------------
-    | Upload Dokumen Pasien
-    |--------------------------------------------------------------------------
-    */
     'uploads' => [
         'disk' => 'private',
         'max_size_kb' => 5120,
