@@ -1,4 +1,4 @@
-# UI/UX — Soeradji Gocare
+# UI/UX — Soeradji Care
 
 Bahasa utama: **Bahasa Indonesia**, istilah awam (bukan istilah teknis/administratif).
 Mobile-first. Target: *"Pasien/keluarga mengerti apa yang harus dilakukan tanpa belajar sistem."*

@@ -10,10 +10,19 @@ return [
     'hospital_name' => env('HOMECARE_HOSPITAL_NAME', 'RSUP Dr. Soeradji Tirtonegoro Klaten'),
     'tagline' => 'Kesehatan di Rumah, Lebih Mudah.',
     'logo_path' => '/images/soeradji-care-logo.svg',
+    'hospital_photo' => '/images/brand/rsst-gedung-soeradji.jpg',
+
+    /*
+    | Asisten AI pemesanan ("ketik sekali, otomatis terpesan").
+    */
+    'assistant' => [
+        'name' => 'Sora',
+        'greeting' => 'Halo! Saya Sora, asisten Soeradji Care. Ceritakan kebutuhan Anda sekali saja — layanan, hari, waktu, dan untuk siapa — lalu pesanan akan saya kirimkan otomatis.',
+    ],
     'emergency_number' => env('HOMECARE_EMERGENCY_NUMBER', '119'),
     'contact' => [
         'phone' => env('HOMECARE_CONTACT_PHONE', '(0272) 321020'),
-        'whatsapp' => env('HOMECARE_CONTACT_WA', '(0272) 321020'),
+        'whatsapp' => env('HOMECARE_CONTACT_WA'),
         'email' => env('HOMECARE_CONTACT_EMAIL', 'rsupsoeradji_klaten@yahoo.com'),
         'address' => env('HOMECARE_CONTACT_ADDRESS', 'Jl. KRT. dr. Soeradji Tirtonegoro No. 1, Tegalyoso, Klaten Selatan, Klaten, Jawa Tengah 57424'),
     ],

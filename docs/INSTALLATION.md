@@ -1,4 +1,4 @@
-# Panduan Instalasi — Soeradji Gocare
+# Panduan Instalasi — Soeradji Care
 
 Panduan lengkap dari nol: prasyarat → database → konfigurasi → menjalankan server →
 mengakses aplikasi (web & API) → pengujian → troubleshooting.
@@ -52,7 +52,7 @@ php artisan key:generate
 Isi `.env` yang paling penting:
 
 ```dotenv
-APP_NAME="Soeradji Gocare"
+APP_NAME="Soeradji Care"
 APP_ENV=local                 # produksi: production
 APP_DEBUG=true                # produksi: false (WAJIB)
 APP_URL=http://localhost:8000

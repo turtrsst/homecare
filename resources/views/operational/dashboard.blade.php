@@ -177,7 +177,7 @@
 
                     <p class="mt-4 text-base font-black text-stone-900">{{ $service->name }}</p>
                     <p class="mt-1 text-sm leading-relaxed text-stone-500">
-                        {{  ? }}
+                        {{ ? }}
                     </p>
                     <div class="mt-4 flex items-center justify-between">
                         <span class="text-sm font-extrabold text-soeradji-700">{{ $service->formattedPrice() }}</span>

@@ -1,73 +1,92 @@
 @extends('layouts.public')
 
-@section('title', 'Daftar Layanan Homecare')
+@section('title', 'Katalog Layanan Homecare')
+@section('description', 'Katalog layanan homecare resmi RSUP Dr. Soeradji Tirtonegoro Klaten: tindakan medik, laboratorium, rehabilitasi, kunjungan dokter, dan sewa alat.')
 
 @section('content')
-    <section class="bg-gradient-to-b from-brand-50 to-white py-12 sm:py-16">
+    @php
+        $categories = $services->pluck('category')->filter()->unique()->values();
+        $searchIndex = $services->map(fn ($s) => [
+            'category' => (string) $s->category,
+            'text' => mb_strtolower($s->name.' '.$s->category.' '.$s->short_description),
+        ])->values();
+    @endphp
+
+    <section class="mesh-bg border-b border-clinic-200/60 py-12 sm:py-16">
         <div class="container-app">
-            <x-section-heading
-                title="Layanan Homecare Kami"
-                subtitle="Semua layanan dikerjakan oleh tenaga kesehatan {{ config('homecare.hospital_name') }} langsung di rumah Anda. Tarif transparan — tidak ada biaya tersembunyi." />
-            <div class="mt-8 max-w-2xl">
-                <x-emergency-banner compact />
-            </div>
-            <x-tariff-note class="mt-4" />
-        </div>
-    </section>
+            <span class="eyebrow">Katalog resmi</span>
+            <h1 class="mt-4 text-4xl font-extrabold sm:text-5xl">Layanan homecare</h1>
+            <p class="mt-4 max-w-2xl text-lg text-clinic-600">Tarif mengacu pada SK Direktur Utama {{ config('homecare.hospital_name') }}. Tarif tercantum sebelum Anda memesan.</p>
 
-    <section class="pb-16">
-        <div class="container-app" x-data="{ q: '' }">
-            <div class="max-w-md">
-                <div class="relative">
-                    <x-icon name="search" class="absolute left-3.5 top-1/2 -translate-y-1/2 w-5 h-5 text-stone-400" />
-                    <input type="search" x-model.debounce.200ms="q" placeholder="Cari layanan... (mis. luka, USG, fisio)"
-                           class="w-full rounded-xl border-0 bg-white py-3 pl-11 pr-4 text-sm shadow-card ring-1 ring-stone-200 placeholder:text-stone-400 focus:ring-2 focus:ring-brand-500" />
-                </div>
-            </div>
+            <div x-data="{
+                q: '',
+                cat: @js(request('kategori', '')),
+                items: @js($searchIndex),
+                match(i) {
+                    const item = this.items[i];
+                    const term = this.q.trim().toLowerCase();
+                    return (this.cat === '' || this.cat === item.category) && (term === '' || item.text.includes(term));
+                },
+                get count() {
+                    return this.items.reduce((n, _, i) => n + (this.match(i) ? 1 : 0), 0);
+                },
+            }" class="mt-8">
+                <div class="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+                    <label class="relative block w-full lg:max-w-md">
+                        <span class="sr-only">Cari layanan</span>
+                        <x-icon name="search" class="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-clinic-400" />
+                        <input type="search" x-model="q" placeholder="Cari: luka, kateter, dokter, darah…"
+                               class="w-full rounded-2xl border border-clinic-200 bg-white py-3.5 pl-12 pr-4 text-sm shadow-card placeholder:text-clinic-400 focus:border-soeradji-400 focus:outline-none focus:ring-4 focus:ring-soeradji-100">
+                    </label>
 
-            @php $grouped = $services->groupBy(fn ($s) => $s->category ?: 'Layanan Lainnya'); @endphp
-
-            @forelse ($grouped as $category => $items)
-                <div class="mt-10 first:mt-0" x-show="!q || {{ $items->filter(fn ($s) => str_contains(strtolower($s->name.' '.$s->short_description), strtolower('__Q__')))->count() }} > 0">
-                    <h2 class="text-lg font-extrabold text-stone-800 flex items-center gap-2">
-                        <span class="w-1.5 h-6 rounded-full bg-brand-500" aria-hidden="true"></span>
-                        {{ $category }}
-                    </h2>
-                    <div class="mt-4 grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
-                        @foreach ($items as $service)
-                            <div x-show="!q || '{{ strtolower($service->name.' '.$service->short_description) }}'.includes(q.toLowerCase())">
-                                <x-service-card :service="$service" :showCategory="false" />
-                            </div>
+                    <div class="scroll-thin -mx-4 flex gap-2 overflow-x-auto px-4 pb-1 lg:mx-0 lg:flex-wrap lg:px-0" role="group" aria-label="Filter kategori">
+                        <button type="button" @click="cat = ''" :aria-pressed="cat === ''"
+                                :class="cat === '' ? 'bg-clinic-900 text-white' : 'bg-white text-clinic-600 ring-1 ring-clinic-200 hover:bg-clinic-50'"
+                                class="shrink-0 rounded-full px-4 py-2 text-sm font-bold transition">Semua</button>
+                        @foreach ($categories as $category)
+                            <button type="button" @click="cat = @js($category)" :aria-pressed="cat === @js($category)"
+                                    :class="cat === @js($category) ? 'bg-clinic-900 text-white' : 'bg-white text-clinic-600 ring-1 ring-clinic-200 hover:bg-clinic-50'"
+                                    class="shrink-0 rounded-full px-4 py-2 text-sm font-bold transition">{{ $category }}</button>
                         @endforeach
                     </div>
                 </div>
-            @empty
-                <x-card>
-                    <x-empty-state icon="heart" title="Belum ada layanan yang dipublikasikan">
-                        Katalog layanan sedang disiapkan. Silakan hubungi kami untuk kebutuhan khusus.
-                    </x-empty-state>
-                </x-card>
-            @endforelse
 
-            <div x-show="q" class="mt-8 text-center text-sm text-stone-400">
-                Tidak ada layanan yang cocok dengan pencarian.
-            </div>
-
-            <div class="mt-12 rounded-3xl bg-brand-600 text-white p-8 sm:p-10 text-center shadow-pop">
-                <h2 class="text-2xl font-extrabold">Butuh layanan yang tidak ada di daftar?</h2>
-                <p class="mt-2 text-brand-50 max-w-lg mx-auto">
-                    Ceritakan kebutuhan Anda melalui form pengajuan — tim kami akan menilai dan
-                    menyiapkan layanan yang paling sesuai.
-                </p>
-                <div class="mt-6 flex flex-col sm:flex-row justify-center gap-3">
-                    <x-button :href="auth()->check() ? route('akun.pesan.step', 'pasien') : route('register')"
-                              class="bg-white text-brand-700 hover:bg-brand-50">
-                        Pesan Homecare
-                    </x-button>
-                    <x-button :href="route('contact')" variant="ghost" class="text-white hover:bg-white/10">
-                        Hubungi Kami
-                    </x-button>
+                <div class="grid gap-5 pt-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                    @foreach ($services as $i => $service)
+                        <article x-show="match({{ $i }})" x-transition.opacity.duration.200ms
+                                 class="surface group flex flex-col p-5 transition hover:-translate-y-1 hover:shadow-pop">
+                            <div class="flex items-start justify-between gap-3">
+                                <span class="flex h-12 w-12 items-center justify-center rounded-2xl bg-soeradji-50 text-soeradji-700 transition group-hover:bg-soeradji-600 group-hover:text-white">
+                                    <x-icon :name="$service->displayIcon()" class="h-6 w-6" />
+                                </span>
+                                <span class="rounded-full bg-clinic-100 px-2.5 py-1 text-[11px] font-bold text-clinic-600">{{ $service->duration_minutes }} mnt</span>
+                            </div>
+                            <p class="mt-4 text-[11px] font-bold uppercase tracking-wider text-medical-700">{{ $service->category }}</p>
+                            <h2 class="mt-1 text-base font-extrabold leading-snug text-clinic-900">{{ $service->name }}</h2>
+                            <p class="mt-2 line-clamp-2 flex-1 text-sm text-clinic-500">{{ $service->short_description }}</p>
+                            <div class="mt-5 flex items-center justify-between gap-3 border-t border-clinic-100 pt-4">
+                                <div>
+                                    <p class="text-[11px] font-semibold text-clinic-400">Tarif</p>
+                                    <p class="font-extrabold text-clinic-900">{{ $service->formattedPrice() }}</p>
+                                </div>
+                                <div class="flex gap-2">
+                                    <a href="{{ route('services.show', $service) }}" class="rounded-xl px-3 py-2 text-xs font-bold text-clinic-700 ring-1 ring-clinic-200 hover:bg-clinic-50">Detail</a>
+                                    <a href="{{ route('ai-assistant', ['tanya' => 'Saya butuh '.mb_strtolower($service->name)]) }}" class="inline-flex items-center gap-1.5 rounded-xl bg-soeradji-600 px-3 py-2 text-xs font-bold text-white hover:bg-soeradji-700">
+                                        <x-icon name="sparkles" class="h-3.5 w-3.5" /> Pesan
+                                    </a>
+                                </div>
+                            </div>
+                        </article>
+                    @endforeach
                 </div>
+
+                @if ($services->isEmpty())
+                    <p class="mt-8 rounded-3xl border border-dashed border-clinic-300 p-10 text-center text-clinic-500">Belum ada layanan aktif.</p>
+                @else
+                    <div x-show="count === 0" x-cloak class="mt-8 rounded-3xl border border-dashed border-clinic-300 p-10 text-center text-clinic-500">
+                        Tidak ada layanan yang cocok. Coba kata kunci lain, atau <a href="{{ route('ai-assistant') }}" class="font-bold text-soeradji-700">tanyakan ke Sora</a>.
+                    </div>
+                @endif
             </div>
         </div>
     </section>

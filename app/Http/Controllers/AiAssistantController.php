@@ -2,130 +2,62 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\HomecareService;
+use App\Services\Assistant\AiBookingAssistant;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Str;
 use Illuminate\View\View;
 
+/**
+ * Halaman & endpoint "Sora" — AI Assistant pemesanan homecare.
+ */
 class AiAssistantController extends Controller
 {
-    /**
-     * Display AI booking assistant page
-     */
-    public function show(): View
+    public function __construct(private readonly AiBookingAssistant $assistant) {}
+
+    public function show(Request $request): View
     {
-        return view('ai-assistant.booking', [
-            'services' => \App\Models\Service::active()->get(),
-            'timeWindows' => config('homecare.time_windows'),
+        $draft = $this->assistant->draft($request);
+        $suggestions = [
+            'Saya butuh perawatan luka untuk ibu saya besok pagi di Klaten',
+            'Ganti kateter untuk ayah, lusa jam 9 pagi',
+            'Visite dokter umum hari Jumat sore',
+            'Ambil darah dan cek gula darah, minggu depan siang',
+        ];
+
+        return view('assistant.index', [
+            'draft' => $this->assistant->snapshot($request),
+            'prefill' => Str::limit(trim((string) $request->query('tanya', '')), 300, ''),
+            'isLoggedIn' => $request->user() !== null,
+            'autoResume' => $request->user() !== null && ($draft['awaiting_login'] ?? false) === true,
+            'suggestions' => $suggestions,
+            'quickReplies' => array_map(fn (string $text) => ['label' => Str::limit($text, 40), 'text' => $text], array_slice($suggestions, 0, 3)),
+            'services' => HomecareService::query()->active()->ordered()->limit(12)->get(['id', 'name']),
         ]);
     }
 
-    /**
-     * Process natural language booking request
-     * Parses user input and returns structured booking data
-     */
-    public function parseBooking(Request $request)
-    {
-        $userInput = $request->input('message');
-
-        // Parse intent dari user input
-        $parsedData = $this->parseUserIntent($userInput);
-
-        return response()->json([
-            'success' => true,
-            'data' => $parsedData,
-            'nextStep' => 'confirm', // confirm atau proceed langsung ke booking
-        ]);
-    }
-
-    /**
-     * Parse user input menjadi structured booking data
-     * Kebutuhan: service, tanggal, jam, lokasi, catatan
-     */
-    private function parseUserIntent(string $input): array
-    {
-        $services = \App\Models\Service::active()->pluck('name', 'id')->toArray();
-        $result = [
-            'service_id' => null,
-            'service_name' => null,
-            'preferred_date' => null,
-            'preferred_time' => null,
-            'location' => null,
-            'notes' => $input,
-            'confidence' => 0.5,
-        ];
-
-        // Deteksi service berdasarkan keywords
-        $serviceKeywords = [
-            'luka' => ['Perawatan Luka'],
-            'dokter' => ['Konsultasi Dokter Umum'],
-            'fisioterapi' => ['Fisioterapi'],
-            'bidan' => ['Konsultasi Bidan'],
-            'vaksin' => ['Vaksinasi'],
-            'darah' => ['Pemeriksaan Darah'],
-            'injeksi' => ['Injeksi'],
-            'cateter' => ['Perawatan Kateter'],
-        ];
-
-        foreach ($serviceKeywords as $keyword => $serviceNames) {
-            if (stripos($input, $keyword) !== false) {
-                $matchedService = \App\Models\Service::whereIn('name', $serviceNames)
-                    ->active()
-                    ->first();
-                if ($matchedService) {
-                    $result['service_id'] = $matchedService->id;
-                    $result['service_name'] = $matchedService->name;
-                    $result['confidence'] += 0.25;
-                }
-                break;
-            }
-        }
-
-        // Deteksi waktu (besok pagi, hari ini sore, dll)
-        if (preg_match('/besok|tomorrow/i', $input)) {
-            $result['preferred_date'] = now()->addDay()->format('Y-m-d');
-            $result['confidence'] += 0.15;
-        }
-
-        if (preg_match('/pagi|morning|08|09|10|11/i', $input)) {
-            $result['preferred_time'] = 'morning';
-            $result['confidence'] += 0.1;
-        } elseif (preg_match('/siang|sore|afternoon|12|13|14|15|16/i', $input)) {
-            $result['preferred_time'] = 'afternoon';
-            $result['confidence'] += 0.1;
-        }
-
-        // Deteksi lokasi
-        if (preg_match('/(jl\.|jalan|jl)\s+([\w\s]+)/i', $input, $matches)) {
-            $result['location'] = trim($matches[2]);
-            $result['confidence'] += 0.1;
-        } elseif (preg_match(/(klaten|jogja|yogya|yogyakarta|solo|semarang)/i, $input)) {
-            $result['location'] = 'Klaten';
-            $result['confidence'] += 0.05;
-        }
-
-        $result['confidence'] = min($result['confidence'], 1);
-
-        return $result;
-    }
-
-    /**
-     * Redirect ke booking wizard dengan data yang sudah di-parse
-     */
-    public function proceedToBooking(Request $request)
+    public function message(Request $request): JsonResponse
     {
         $validated = $request->validate([
-            'service_id' => 'required|exists:services,id',
-            'preferred_date' => 'required|date|after_or_equal:today',
-            'preferred_time' => 'nullable|in:morning,midday,afternoon',
-            'location' => 'required|string',
-            'notes' => 'nullable|string',
+            'message' => ['required', 'string', 'min:2', 'max:1000'],
+        ], [
+            'message.required' => 'Silakan ketik kebutuhan Anda terlebih dahulu.',
+            'message.max' => 'Pesan terlalu panjang (maksimal 1000 karakter).',
         ]);
 
-        // Store ke session untuk dipakai booking wizard
-        session([
-            'ai_booking_data' => $validated,
-        ]);
+        return response()->json($this->assistant->handle($request, $validated['message']));
+    }
 
-        // Redirect ke booking wizard step pertama (service)
-        return redirect()->route('akun.pesan.step', 'pasien');
+    public function reset(Request $request): RedirectResponse|JsonResponse
+    {
+        $this->assistant->reset($request);
+
+        if ($request->expectsJson()) {
+            return response()->json(['status' => 'reset']);
+        }
+
+        return redirect()->route('ai-assistant')->with('success', 'Percakapan dimulai ulang.');
     }
 }

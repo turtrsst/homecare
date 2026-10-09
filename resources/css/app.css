@@ -3,89 +3,88 @@
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
 @source './../**/*.blade.php';
+@source '../js/**/*.js';
 
 /*
  * Design tokens — Soeradji Care
- * Karakter: profesional, hangat, modern, dan terpercaya.
+ * Karakter: tepercaya seperti rumah sakit, hangat seperti rumah, modern seperti aplikasi.
+ * Biru RSUP (soeradji) = kepercayaan · hijau medis (medical) = kesehatan & pemulihan.
  */
 @theme {
-    --font-sans: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
-        sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-sans: 'Plus Jakarta Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
+        sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji';
 
-    --color-brand-50: #f0fdfa;
-    --color-brand-100: #ccfbf1;
-    --color-brand-200: #99f6e4;
-    --color-brand-300: #5eead4;
-    --color-brand-400: #2dd4bf;
-    --color-brand-500: #14b8a6;
-    --color-brand-600: #0d9488;
-    --color-brand-700: #0f766e;
-    --color-brand-800: #115e59;
-    --color-brand-900: #134e4a;
-    --color-brand-950: #042f2e;
-
-    --color-soeradji-50: #edf7ff;
-    --color-soeradji-100: #d9efff;
-    --color-soeradji-200: #bdddfd;
-    --color-soeradji-300: #89c2fb;
-    --color-soeradji-400: #5c9ef6;
-    --color-soeradji-500: #3a7aed;
+    --color-soeradji-50: #eff6ff;
+    --color-soeradji-100: #dbeafe;
+    --color-soeradji-200: #bfdbfe;
+    --color-soeradji-300: #93c5fd;
+    --color-soeradji-400: #60a5fa;
+    --color-soeradji-500: #3b82f6;
     --color-soeradji-600: #285fce;
-    --color-soeradji-700: #214ca3;
-    --color-soeradji-800: #1d3c7d;
-    --color-soeradji-900: #192f62;
+    --color-soeradji-700: #1d4ed8;
+    --color-soeradji-800: #1e40af;
+    --color-soeradji-900: #1e3a8a;
 
-    --color-medical-50: #eefdf8;
-    --color-medical-100: #d6f8eb;
-    --color-medical-200: #b8f0dd;
-    --color-medical-300: #7ee0bb;
-    --color-medical-400: #43c898;
-    --color-medical-500: #22a776;
+    /* Alias lama (brand-*) — dipetakan ke palet RSUP agar komponen lama tetap konsisten. */
+    --color-brand-50: #eff6ff;
+    --color-brand-100: #dbeafe;
+    --color-brand-200: #bfdbfe;
+    --color-brand-300: #93c5fd;
+    --color-brand-400: #60a5fa;
+    --color-brand-500: #3b82f6;
+    --color-brand-600: #285fce;
+    --color-brand-700: #1d4ed8;
+    --color-brand-800: #1e40af;
+    --color-brand-900: #1e3a8a;
+
+    --color-medical-50: #ecfdf5;
+    --color-medical-100: #d1fae5;
+    --color-medical-200: #a7f3d0;
+    --color-medical-300: #6ee7b7;
+    --color-medical-400: #34d399;
+    --color-medical-500: #10b981;
     --color-medical-600: #178a61;
-    --color-medical-700: #136f4f;
-    --color-medical-800: #125a42;
-    --color-medical-900: #104d38;
+    --color-medical-700: #047857;
+    --color-medical-800: #065f46;
+    --color-medical-900: #064e3b;
 
-    --color-sand-50: #f7f3ee;
-    --color-sand-100: #efe3d3;
-
-    --color-clinic-50: #f7f9fc;
-    --color-clinic-100: #edf1f7;
-    --color-clinic-200: #dfe7f1;
-    --color-clinic-300: #c7d4e3;
-    --color-clinic-400: #95a9c4;
-    --color-clinic-500: #6e88a9;
-    --color-clinic-600: #4d688a;
-    --color-clinic-700: #374d6b;
-    --color-clinic-800: #273b53;
-    --color-clinic-900: #1d2d42;
+    --color-clinic-50: #f8fafc;
+    --color-clinic-100: #f1f5f9;
+    --color-clinic-200: #e2e8f0;
+    --color-clinic-300: #cbd5e1;
+    --color-clinic-400: #94a3b8;
+    --color-clinic-500: #64748b;
+    --color-clinic-600: #475569;
+    --color-clinic-700: #334155;
+    --color-clinic-800: #1e293b;
+    --color-clinic-900: #0f172a;
 
     --color-warm-50: #fffbeb;
     --color-warm-100: #fef3c7;
     --color-warm-500: #f59e0b;
     --color-warm-600: #d97706;
 
-    --shadow-card: 0 1px 2px 0 rgb(28 25 23 / 0.04), 0 8px 24px -12px rgb(28 25 23 / 0.12);
-    --shadow-soft: 0 12px 32px -18px rgb(17 24 39 / 0.35);
-    --shadow-pop: 0 18px 40px -18px rgb(28 25 23 / 0.18);
-    --shadow-panel: 0 24px 70px -30px rgb(17 24 39 / 0.3);
+    --shadow-card: 0 1px 2px 0 rgb(15 23 42 / 0.04), 0 10px 30px -14px rgb(15 23 42 / 0.14);
+    --shadow-soft: 0 12px 32px -18px rgb(15 23 42 / 0.28);
+    --shadow-pop: 0 22px 48px -18px rgb(15 23 42 / 0.32);
+    --shadow-panel: 0 30px 80px -30px rgb(15 23 42 / 0.35);
+    --shadow-glow: 0 0 0 1px rgb(255 255 255 / 0.6) inset, 0 20px 50px -20px rgb(40 95 206 / 0.45);
 }
 
 @layer base {
     html {
         -webkit-text-size-adjust: 100%;
         scroll-behavior: smooth;
+        scroll-padding-top: 5rem;
     }
 
     body {
-        @apply bg-stone-50 text-stone-800 antialiased;
-        font-feature-settings: 'cv02', 'cv03', 'cv04';
-        background-image: radial-gradient(circle at top left, rgb(220 242 255 / 0.55), transparent 30%),
-            radial-gradient(circle at top right, rgb(203 255 241 / 0.55), transparent 28%);
+        @apply bg-slate-50 text-clinic-800 antialiased;
+        font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
     }
 
     :focus-visible {
-        @apply outline-2 outline-offset-2 outline-brand-600;
+        @apply outline-2 outline-offset-2 outline-soeradji-600;
     }
 
     button, [role='button'], input[type='submit'] {
@@ -93,14 +92,14 @@
     }
 
     h1, h2, h3 {
-        @apply tracking-tight text-stone-900;
+        @apply tracking-tight text-clinic-900;
         text-wrap: balance;
     }
 }
 
 @layer components {
     .container-app {
-        @apply mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8;
+        @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
     }
 
     .container-narrow {
@@ -108,15 +107,55 @@
     }
 
     .stat-card {
-        @apply rounded-[24px] border border-stone-200 bg-white p-4 shadow-card;
+        @apply rounded-3xl border border-clinic-200/80 bg-white p-4 shadow-card;
     }
 
     .glass-panel {
-        @apply rounded-[28px] border border-white/60 bg-white/80 shadow-soft backdrop-blur;
+        @apply rounded-[28px] border border-white/70 bg-white/75 shadow-soft backdrop-blur-xl;
+    }
+
+    .surface {
+        @apply rounded-3xl border border-clinic-200/80 bg-white shadow-card;
+    }
+
+    .section-panel {
+        @apply rounded-2xl border border-clinic-200 bg-white p-4 shadow-card;
+    }
+
+    .eyebrow {
+        @apply inline-flex items-center gap-2 rounded-full border border-soeradji-200 bg-white/80 px-3 py-1 text-xs font-bold uppercase tracking-[0.14em] text-soeradji-700 shadow-sm;
+    }
+
+    .brand-badge {
+        @apply inline-flex items-center gap-2 rounded-full bg-soeradji-50 px-3 py-1.5 text-sm font-bold text-soeradji-700 ring-1 ring-soeradji-100;
+    }
+
+    .btn-primary {
+        @apply inline-flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-soeradji-600 to-soeradji-500 px-5 py-3 text-sm font-bold text-white shadow-lg shadow-soeradji-600/25 transition hover:-translate-y-0.5 hover:shadow-soeradji-600/40 active:translate-y-0;
+    }
+
+    .btn-ghost {
+        @apply inline-flex items-center justify-center gap-2 rounded-2xl border border-clinic-200 bg-white px-5 py-3 text-sm font-bold text-clinic-800 transition hover:border-clinic-300 hover:bg-clinic-50;
+    }
+
+    .mesh-bg {
+        background-image:
+            radial-gradient(60% 50% at 0% 0%, rgb(147 197 253 / 0.45) 0%, transparent 60%),
+            radial-gradient(45% 40% at 100% 10%, rgb(110 231 183 / 0.4) 0%, transparent 60%),
+            radial-gradient(50% 40% at 50% 100%, rgb(191 219 254 / 0.5) 0%, transparent 70%);
+    }
+
+    .grid-dots {
+        background-image: radial-gradient(rgb(15 23 42 / 0.07) 1px, transparent 1px);
+        background-size: 22px 22px;
     }
 
     .pb-bnav {
-        padding-bottom: calc(5.5rem + env(safe-area-inset-bottom));
+        padding-bottom: calc(6rem + env(safe-area-inset-bottom));
+    }
+
+    .text-gradient {
+        @apply bg-gradient-to-r from-soeradji-600 via-soeradji-500 to-medical-500 bg-clip-text text-transparent;
     }
 }
 
@@ -124,16 +163,50 @@
     100% { transform: translateX(100%); }
 }
 
+@keyframes float-slow {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+@keyframes bounce-dot {
+    0%, 80%, 100% { transform: translateY(0); opacity: 0.4; }
+    40% { transform: translateY(-4px); opacity: 1; }
+}
+
+@keyframes fade-up {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-float-slow { animation: float-slow 6s ease-in-out infinite; }
+.animate-fade-up { animation: fade-up 0.35s ease-out both; }
+.typing-dot { animation: bounce-dot 1.2s infinite ease-in-out; }
+.typing-dot:nth-child(2) { animation-delay: 0.15s; }
+.typing-dot:nth-child(3) { animation-delay: 0.3s; }
+
 .skeleton {
-    @apply relative overflow-hidden bg-stone-200/70 rounded-lg;
+    @apply relative overflow-hidden rounded-lg bg-clinic-200/70;
 }
 
 .skeleton::after {
     content: '';
     @apply absolute inset-0;
     transform: translateX(-100%);
-    background-image: linear-gradient(90deg, transparent, rgb(255 255 255 / 0.55), transparent);
+    background-image: linear-gradient(90deg, transparent, rgb(255 255 255 / 0.6), transparent);
     animation: shimmer 1.4s infinite;
+}
+
+.scroll-thin {
+    scrollbar-width: thin;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
 }
 
 [x-cloak] { display: none !important; }

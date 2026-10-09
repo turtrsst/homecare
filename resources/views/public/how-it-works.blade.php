@@ -1,79 +1,61 @@
 @extends('layouts.public')
 
-@section('title', 'Cara Kerja Layanan Homecare')
+@section('title', 'Cara Kerja')
+@section('description', 'Empat langkah memesan homecare di Soeradji Care: ketik kebutuhan, verifikasi, jadwal kunjungan, dan layanan di rumah.')
 
 @section('content')
-    <section class="bg-gradient-to-b from-brand-50 to-white py-12 sm:py-16">
-        <div class="container-narrow">
-            <x-section-heading align="center"
-                title="Cara Kerja Layanan Homecare"
-                subtitle="Dari pengajuan sampai petugas pulang — inilah yang terjadi di setiap tahap, dan apa yang Anda perlu lakukan." />
+    <section class="mesh-bg py-14 sm:py-20">
+        <div class="container-app text-center">
+            <span class="eyebrow">Cara kerja</span>
+            <h1 class="mx-auto mt-4 max-w-3xl text-4xl font-extrabold leading-tight sm:text-5xl">Dari satu ketikan, <span class="text-gradient">sampai ke rumah Anda</span></h1>
+            <p class="mx-auto mt-5 max-w-2xl text-lg text-clinic-600">Tidak perlu antre atau bolak-balik ke rumah sakit. Prosesnya singkat dan semua tahap terpantau.</p>
+        </div>
+    </section>
+
+    <section class="py-16">
+        <div class="container-app">
+            <ol class="relative grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+                @foreach ([
+                    ['icon' => 'sparkles', 'title' => 'Ketik kebutuhan Anda', 'text' => 'Tulis atau ucapkan sekali saja: layanan apa, untuk siapa, kapan, dan di mana. Sora menyusun pesanannya.'],
+                    ['icon' => 'shield-check', 'title' => 'Verifikasi tim kami', 'text' => 'Koordinator memeriksa kelengkapan data dan melakukan skrining kebutuhan medis Anda.'],
+                    ['icon' => 'calendar', 'title' => 'Jadwal dikonfirmasi', 'text' => 'Kami mengonfirmasi tanggal dan jam kunjungan, serta total biaya final, lewat notifikasi.'],
+                    ['icon' => 'home', 'title' => 'Layanan di rumah', 'text' => 'Tenaga profesional datang ke alamat Anda. Hasil dan catatan kunjungan tersimpan di akun.'],
+                ] as $i => $step)
+                    <li class="surface relative p-7">
+                        <span class="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-soeradji-600 to-soeradji-500 text-white shadow-lg shadow-soeradji-600/25">
+                            <x-icon :name="$step['icon']" class="h-7 w-7" />
+                        </span>
+                        <p class="mt-6 text-xs font-extrabold uppercase tracking-widest text-soeradji-600">Langkah {{ $i + 1 }}</p>
+                        <h2 class="mt-2 text-xl font-extrabold text-clinic-900">{{ $step['title'] }}</h2>
+                        <p class="mt-3 leading-relaxed text-clinic-600">{{ $step['text'] }}</p>
+                    </li>
+                @endforeach
+            </ol>
         </div>
     </section>
 
     <section class="pb-16">
-        <div class="container-narrow space-y-5">
-            @foreach ([
-                [
-                    'icon' => 'clipboard', 'stage' => 'Tahap 1', 'title' => 'Anda mengajukan kebutuhan',
-                    'desc' => 'Masuk atau daftar, pilih pasien (boleh anggota keluarga), pilih layanan, ceritakan kondisi, tentukan alamat dan perkiraan waktu kunjungan. Semuanya dalam langkah-langkah singkat dengan panduan jelas.',
-                    'you' => 'Isi form pemesanan ± 5 menit.',
-                ],
-                [
-                    'icon' => 'shield', 'stage' => 'Tahap 2', 'title' => 'Tim kami memverifikasi',
-                    'desc' => 'Koordinator homecare memeriksa kelengkapan dan kelayakan pengajuan. Bila ada informasi yang kurang, kami akan bertanya lewat halaman pengajuan — Anda cukup menjawab di sana.',
-                    'you' => 'Tunggu kabar; jawab bila kami butuh info tambahan.',
-                ],
-                [
-                    'icon' => 'stethoscope', 'stage' => 'Tahap 3', 'title' => 'Skrining & penetapan layanan',
-                    'desc' => 'Berdasarkan kondisi pasien, koordinator menetapkan layanan final yang paling sesuai — bisa sama dengan pilihan Anda, bisa disesuaikan agar lebih tepat guna.',
-                    'you' => 'Tidak perlu melakukan apa pun.',
-                ],
-                [
-                    'icon' => 'calendar', 'stage' => 'Tahap 4', 'title' => 'Jadwal, petugas, dan biaya dipastikan',
-                    'desc' => 'Anda menerima kepastian: kapan petugas datang, siapa namanya dan apa profesinya, serta total biaya yang harus dibayarkan. Status pengajuan berubah menjadi TERJADWAL.',
-                    'you' => 'Periksa detail jadwal di halaman pengajuan.',
-                ],
-                [
-                    'icon' => 'home', 'stage' => 'Tahap 5', 'title' => 'Petugas datang & melayani',
-                    'desc' => 'Pada hari kunjungan Anda dapat melihat pergerakan status: petugas berangkat, tiba (check-in), melakukan asesmen, melaksanakan tindakan, dan mendokumentasikan pelayanan sebelum pamit (check-out).',
-                    'you' => 'Sambut petugas; siapkan dokumen & obat bila ada.',
-                ],
-                [
-                    'icon' => 'check-circle', 'stage' => 'Tahap 6', 'title' => 'Selesai & tindak lanjut',
-                    'desc' => 'Setelah pelayanan selesai, catatan tindakan dan anjuran perawatan tersimpan di riwayat Anda. Bila perlu kunjungan lanjutan, koordinator akan mengabari.',
-                    'you' => 'Lihat ringkasan pelayanan di riwayat.',
-                ],
-            ] as $index => $step)
-                <x-card class="relative">
-                    <div class="flex gap-4 sm:gap-5">
-                        <div class="flex flex-col items-center shrink-0">
-                            <div class="w-12 h-12 rounded-2xl bg-brand-50 text-brand-600 flex items-center justify-center ring-1 ring-brand-100">
-                                <x-icon :name="$step['icon']" class="w-6 h-6" />
-                            </div>
-                            @unless ($loop->last)
-                                <span class="w-0.5 flex-1 bg-brand-100 mt-2" aria-hidden="true"></span>
-                            @endunless
-                        </div>
-                        <div class="min-w-0">
-                            <p class="text-xs font-bold uppercase tracking-wider text-brand-600">{{ $step['stage'] }}</p>
-                            <h2 class="mt-0.5 font-extrabold text-stone-900 text-lg">{{ $step['title'] }}</h2>
-                            <p class="mt-2 text-sm sm:text-base text-stone-500 leading-relaxed">{{ $step['desc'] }}</p>
-                            <p class="mt-3 inline-flex items-center gap-2 rounded-xl bg-warm-50 ring-1 ring-warm-100 px-3 py-2 text-xs sm:text-sm font-semibold text-warm-600">
-                                <x-icon name="user" class="w-4 h-4 shrink-0" />
-                                Peran Anda: {{ $step['you'] }}
-                            </p>
-                        </div>
-                    </div>
-                </x-card>
-            @endforeach
-
-            <x-emergency-banner class="mt-8" />
-
-            <div class="text-center pt-2">
-                <x-button :href="auth()->check() ? route('akun.pesan.step', 'pasien') : route('register')" size="lg" icon="plus">
-                    Pesan Homecare
-                </x-button>
+        <div class="container-app">
+            <div class="grid gap-6 lg:grid-cols-2">
+                <div class="surface p-8">
+                    <h2 class="text-2xl font-extrabold">Yang perlu disiapkan</h2>
+                    <ul class="mt-6 space-y-4">
+                        @foreach ([
+                            'Identitas pasien (KTP, KK, atau kartu berobat)',
+                            'Surat rujukan atau hasil pemeriksaan terakhir, bila ada',
+                            'Alamat lengkap dan nomor yang bisa dihubungi',
+                            'Preferensi hari dan jam kunjungan',
+                        ] as $item)
+                            <li class="flex items-start gap-3 text-clinic-700"><x-icon name="check-circle" class="mt-0.5 h-5 w-5 shrink-0 text-medical-600" />{{ $item }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+                <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-clinic-900 via-soeradji-900 to-soeradji-700 p-8 text-white">
+                    <div class="absolute -right-12 -top-12 h-48 w-48 rounded-full bg-medical-400/20 blur-3xl"></div>
+                    <h2 class="relative text-2xl font-extrabold">Gawat darurat? Jangan menunggu.</h2>
+                    <p class="relative mt-4 leading-relaxed text-soeradji-100">Homecare tidak untuk kondisi gawat darurat. Hubungi <strong class="text-white">{{ config('homecare.emergency_number') }}</strong> atau datang ke IGD {{ config('homecare.hospital_name') }} (24 jam).</p>
+                    <a href="{{ route('ai-assistant') }}" class="btn-primary relative mt-8 !bg-white !text-soeradji-800 hover:!bg-soeradji-50"><x-icon name="sparkles" class="h-5 w-5" /> Mulai pesan lewat Sora</a>
+                </div>
             </div>
         </div>
     </section>

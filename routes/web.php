@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AttachmentController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\Auth\PasswordResetController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\AiAssistantController;
 use App\Http\Controllers\Operational;
@@ -27,9 +28,12 @@ Route::get('/kontak', [PublicPageController::class, 'contact'])->name('contact')
 | AI ASSISTANT — AI Booking Flow
 |--------------------------------------------------------------------------
 */
-Route::get('/ai-booking', [AiAssistantController::class, 'show'])->name('ai-assistant.show');
-Route::post('/ai-booking/parse', [AiAssistantController::class, 'parseBooking'])->name('ai-assistant.parse');
-Route::post('/ai-booking/proceed', [AiAssistantController::class, 'proceedToBooking'])->name('ai-assistant.proceed');
+Route::get('/asisten', [AiAssistantController::class, 'show'])->name('ai-assistant');
+Route::post('/asisten/pesan', [AiAssistantController::class, 'message'])
+    ->middleware('throttle:30,1')
+    ->name('ai-assistant.message');
+Route::post('/asisten/reset', [AiAssistantController::class, 'reset'])->name('ai-assistant.reset');
+Route::redirect('/ai-booking', '/asisten', 301);
 
 /*
 |--------------------------------------------------------------------------
@@ -41,6 +45,12 @@ Route::middleware('guest')->group(function () {
     Route::post('/masuk', [AuthenticatedSessionController::class, 'store'])->middleware('throttle:6,1');
     Route::get('/daftar', [RegisteredUserController::class, 'create'])->name('register');
     Route::post('/daftar', [RegisteredUserController::class, 'store'])->middleware('throttle:6,1');
+
+    // Lupa kata sandi
+    Route::get('/lupa-kata-sandi', [PasswordResetController::class, 'requestForm'])->name('password.request');
+    Route::post('/lupa-kata-sandi', [PasswordResetController::class, 'sendLink'])->middleware('throttle:4,1')->name('password.email');
+    Route::get('/atur-ulang-kata-sandi/{token}', [PasswordResetController::class, 'resetForm'])->name('password.reset');
+    Route::post('/atur-ulang-kata-sandi', [PasswordResetController::class, 'reset'])->middleware('throttle:6,1')->name('password.store');
 });
 
 Route::post('/keluar', [AuthenticatedSessionController::class, 'destroy'])

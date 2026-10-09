@@ -1,125 +1,66 @@
-@import 'tailwindcss';
+{{-- Layout area operasional RSUP: sidebar di desktop, drawer di mobile. --}}
+@extends('layouts.base')
 
-@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
-@source '../../storage/framework/views/*.php';
-@source './../**/*.blade.php';
+@section('body')
+    @php
+        $user = auth()->user();
+        $sections = [
+            ['label' => 'Ringkasan', 'route' => 'operasional.dashboard', 'match' => 'operasional.dashboard', 'icon' => 'home'],
+            ['label' => 'Permintaan', 'route' => 'operasional.pengajuan.index', 'match' => 'operasional.pengajuan.*', 'icon' => 'clipboard'],
+            ['label' => 'Jadwal kunjungan', 'route' => 'operasional.jadwal.index', 'match' => 'operasional.jadwal.*', 'icon' => 'calendar'],
+            ['label' => 'Pasien', 'route' => 'operasional.pasien.index', 'match' => 'operasional.pasien.*', 'icon' => 'users'],
+            ['label' => 'Layanan & tarif', 'route' => 'operasional.layanan.index', 'match' => 'operasional.layanan.*', 'icon' => 'stethoscope', 'can' => 'services.manage'],
+            ['label' => 'Tenaga kesehatan', 'route' => 'operasional.petugas.index', 'match' => 'operasional.petugas.*', 'icon' => 'user', 'can' => 'staff.manage'],
+            ['label' => 'Laporan', 'route' => 'operasional.laporan.index', 'match' => 'operasional.laporan.*', 'icon' => 'chart', 'can' => 'reports.view'],
+            ['label' => 'Audit trail', 'route' => 'operasional.audit.index', 'match' => 'operasional.audit.*', 'icon' => 'shield', 'can' => 'audit.view'],
+        ];
+    @endphp
 
-@theme {
-    --font-sans: 'Inter', 'Segoe UI', sans-serif;
+    <div class="min-h-full" x-data="{ drawer: false }">
+        <a href="#konten" class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-xl focus:bg-white focus:px-4 focus:py-2">Lewati ke konten</a>
 
-    --color-soeradji-50: #eef7ff;
-    --color-soeradji-100: #dceeff;
-    --color-soeradji-200: #bfdfff;
-    --color-soeradji-300: #8ec4ff;
-    --color-soeradji-400: #5aa1f5;
-    --color-soeradji-500: #2f7ae5;
-    --color-soeradji-600: #1f5fc2;
-    --color-soeradji-700: #1a4f9a;
-    --color-soeradji-800: #174380;
-    --color-soeradji-900: #15396a;
+        {{-- Sidebar (desktop) --}}
+        <aside class="fixed inset-y-0 left-0 z-30 hidden w-72 flex-col border-r border-clinic-200/80 bg-white lg:flex">
+            @include('layouts.partials.admin-nav', ['sections' => $sections, 'user' => $user])
+        </aside>
 
-    --color-medical-50: #ecfdf5;
-    --color-medical-100: #d1fae5;
-    --color-medical-200: #a7f3d0;
-    --color-medical-300: #6ee7b7;
-    --color-medical-400: #34d399;
-    --color-medical-500: #10b981;
-    --color-medical-600: #059669;
-    --color-medical-700: #047857;
-    --color-medical-800: #065f46;
-    --color-medical-900: #064e3b;
+        {{-- Drawer (mobile) --}}
+        <div x-show="drawer" x-cloak class="fixed inset-0 z-40 lg:hidden" role="dialog" aria-modal="true" aria-label="Menu operasional">
+            <div class="absolute inset-0 bg-clinic-900/40 backdrop-blur-sm" @click="drawer = false"></div>
+            <aside x-show="drawer" x-transition:enter="transition duration-200" x-transition:enter-start="-translate-x-full" x-transition:enter-end="translate-x-0"
+                   x-transition:leave="transition duration-150" x-transition:leave-start="translate-x-0" x-transition:leave-end="-translate-x-full"
+                   @keydown.escape.window="drawer = false"
+                   class="absolute inset-y-0 left-0 flex w-80 max-w-[85vw] flex-col bg-white shadow-panel">
+                <div class="flex items-center justify-between border-b border-clinic-100 p-4">
+                    <x-brand size="sm" :tagline="false" />
+                    <button type="button" @click="drawer = false" class="rounded-xl p-2 text-clinic-500 hover:bg-clinic-100" aria-label="Tutup menu"><x-icon name="x" class="h-5 w-5" /></button>
+                </div>
+                @include('layouts.partials.admin-nav', ['sections' => $sections, 'user' => $user])
+            </aside>
+        </div>
 
-    --color-clinic-50: #f7fafc;
-    --color-clinic-100: #edf3f8;
-    --color-clinic-200: #dfeaf3;
-    --color-clinic-300: #c7d8e6;
-    --color-clinic-400: #8cadc7;
-    --color-clinic-500: #628ca9;
-    --color-clinic-600: #446f8d;
-    --color-clinic-700: #2f5675;
-    --color-clinic-800: #264861;
-    --color-clinic-900: #203d53;
+        <div class="lg:pl-72">
+            <header class="sticky top-0 z-20 border-b border-white/60 bg-white/85 backdrop-blur-xl">
+                <div class="flex h-16 items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
+                    <div class="flex items-center gap-3">
+                        <button type="button" @click="drawer = true" class="rounded-xl p-2 text-clinic-600 hover:bg-clinic-100 lg:hidden" aria-label="Buka menu"><x-icon name="menu" class="h-6 w-6" /></button>
+                        <div class="min-w-0">
+                            <p class="truncate text-xs font-semibold uppercase tracking-[0.16em] text-soeradji-700">Operasional</p>
+                            <p class="truncate text-sm font-bold text-clinic-900">@yield('title', 'Dashboard')</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <a href="{{ route('akun.dashboard') }}" class="hidden rounded-xl px-3 py-2 text-sm font-semibold text-clinic-600 hover:bg-clinic-100 sm:inline-flex">Lihat sebagai pasien</a>
+                        <span class="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-soeradji-500 to-medical-500 text-sm font-extrabold text-white" title="{{ $user->name }}">{{ mb_strtoupper(mb_substr($user->name, 0, 1)) }}</span>
+                    </div>
+                </div>
+            </header>
 
-    --color-sand-50: #f8f5f2;
-    --color-sand-100: #f2ece4;
-    --color-sand-200: #e8dcc9;
-
-    --shadow-soft: 0 12px 36px rgba(18, 39, 66, 0.08);
-    --shadow-pop: 0 22px 48px rgba(23, 55, 89, 0.14);
-}
-
-@layer base {
-    html {
-        scroll-behavior: smooth;
-        -webkit-text-size-adjust: 100%;
-    }
-
-    body {
-        @apply bg-sand-50 text-clinic-900 antialiased;
-        font-feature-settings: 'cv02', 'cv03', 'cv04';
-    }
-
-    h1, h2, h3, h4, h5, h6 {
-        @apply tracking-tight text-clinic-900;
-        text-wrap: balance;
-    }
-
-    :focus-visible {
-        @apply outline-2 outline-offset-2 outline-soeradji-600;
-    }
-
-    button, [role='button'], input[type='submit'] {
-        min-height: 2.75rem;
-    }
-}
-
-@layer components {
-    .container-app {
-        @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
-    }
-
-    .container-narrow {
-        @apply mx-auto w-full max-w-3xl px-4 sm:px-6;
-    }
-
-    .brand-badge {
-        @apply inline-flex items-center gap-2 rounded-full border border-soeradji-200 bg-soeradji-50 px-3 py-1.5 text-xs font-bold text-soeradji-700;
-    }
-
-    .stat-card {
-        @apply rounded-[24px] border border-stone-200 bg-white p-4 shadow-soft;
-    }
-
-    .shadow-panel {
-        box-shadow: var(--shadow-pop);
-    }
-
-    .service-card-hover {
-        transition: all 0.25s ease;
-    }
-
-    .service-card-hover:hover {
-        transform: translateY(-4px);
-        box-shadow: var(--shadow-soft);
-    }
-}
-
-@keyframes shimmer {
-    100% { transform: translateX(100%); }
-}
-
-.skeleton {
-    @apply relative overflow-hidden rounded-xl bg-clinic-100;
-}
-
-.skeleton::after {
-    content: '';
-    @apply absolute inset-0;
-    transform: translateX(-100%);
-    background-image: linear-gradient(90deg, transparent, rgba(255,255,255,0.55), transparent);
-    animation: shimmer 1.4s infinite;
-}
-
-[x-cloak] {
-    display: none !important;
-}
+            <main id="konten" class="px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
+                <div class="mx-auto max-w-7xl">
+                    @yield('content')
+                </div>
+            </main>
+        </div>
+    </div>
+@endsection
