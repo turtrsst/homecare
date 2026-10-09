@@ -1,166 +1,126 @@
 <?php
 
-use App\Http\Controllers\AttachmentController;
-use App\Http\Controllers\Auth\AuthenticatedSessionController;
-use App\Http\Controllers\Auth\RegisteredUserController;
-use App\Http\Controllers\Operational;
-use App\Http\Controllers\Patient;
-use App\Http\Controllers\PublicPageController;
-use App\Http\Controllers\Staff;
-use Illuminate\Support\Facades\Route;
+namespace App\Http\Controllers;
 
-/*
-|--------------------------------------------------------------------------
-| PUBLIC — masyarakat umum
-|--------------------------------------------------------------------------
-*/
-Route::get('/', [PublicPageController::class, 'home'])->name('home');
-Route::get('/layanan', [PublicPageController::class, 'services'])->name('services.index');
-Route::get('/layanan/{service:slug}', [PublicPageController::class, 'serviceDetail'])->name('services.show');
-Route::get('/cara-kerja', [PublicPageController::class, 'howItWorks'])->name('how-it-works');
-Route::get('/faq', [PublicPageController::class, 'faq'])->name('faq');
-Route::get('/kontak', [PublicPageController::class, 'contact'])->name('contact');
+use App\Models\HomecareService;
+use App\Services\AiQuickBookingAssistant;
+use App\Services\HomecareCatalog;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\View\View;
 
-/*
-|--------------------------------------------------------------------------
-| AUTH — masuk / daftar
-|--------------------------------------------------------------------------
-*/
-Route::middleware('guest')->group(function () {
-    Route::get('/masuk', [AuthenticatedSessionController::class, 'create'])->name('login');
-    Route::post('/masuk', [AuthenticatedSessionController::class, 'store'])->middleware('throttle:6,1');
-    Route::get('/daftar', [RegisteredUserController::class, 'create'])->name('register');
-    Route::post('/daftar', [RegisteredUserController::class, 'store'])->middleware('throttle:6,1');
-});
+class PublicPageController extends Controller
+{
+    public function __construct(
+        private readonly HomecareCatalog $catalog,
+        private readonly AiQuickBookingAssistant $aiAssistant,
+    ) {}
 
-Route::post('/keluar', [AuthenticatedSessionController::class, 'destroy'])
-    ->middleware('auth')
-    ->name('logout');
+    public function home(): View
+    {
+        return view('public.home', [
+            'featuredServices' => $this->catalog->featuredServices(4),
+            'services' => $this->catalog->activeServices()->take(8),
+        ]);
+    }
 
-/*
-|--------------------------------------------------------------------------
-| PATIENT AREA — /akun
-|--------------------------------------------------------------------------
-*/
-Route::middleware('auth')->prefix('akun')->name('akun.')->group(function () {
-    Route::get('/', [Patient\DashboardController::class, 'index'])->name('dashboard');
+    public function aiAssistant(): View
+    {
+        return view('public.ai-assistant', [
+            'services' => $this->catalog->activeServices()->take(6),
+        ]);
+    }
 
-    // Wizard booking (multi-step)
-    Route::controller(Patient\BookingWizardController::class)
-        ->prefix('pesan')
-        ->name('pesan.')
-        ->group(function () {
-            Route::get('/{step?}', 'show')
-                ->whereIn('step', Patient\BookingWizardController::STEPS)
-                ->name('step');
-            Route::post('/{step}', 'save')
-                ->whereIn('step', Patient\BookingWizardController::STEPS)
-                ->name('save');
-            Route::post('/konfirmasi/kirim', 'submit')->name('submit');
-            Route::post('/reset', 'reset')->name('reset');
-            Route::post('/lampiran/{index}', 'removeDraft')->whereNumber('index')->name('lampiran.hapus');
-        });
+    public function processAiAssistant(Request $request): RedirectResponse
+    {
+        $request->validate([
+            'message' => ['required', 'string', 'min:5', 'max:500'],
+        ]);
 
-    // Pengajuan & riwayat
-    Route::get('/pengajuan', [Patient\RequestController::class, 'index'])->name('pengajuan.index');
-    Route::get('/pengajuan/{request:code}', [Patient\RequestController::class, 'show'])->name('pengajuan.show');
-    Route::post('/pengajuan/{request:code}/batal', [Patient\RequestController::class, 'cancel'])->name('pengajuan.batal');
-    Route::post('/pengajuan/{request:code}/informasi', [Patient\RequestController::class, 'provideInformation'])->name('pengajuan.informasi');
-    Route::post('/pengajuan/{request:code}/ulasan', [Patient\RequestController::class, 'storeReview'])->name('pengajuan.ulasan');
+        $parsed = $this->aiAssistant->parse($request->string('message')->toString(), $request->user());
 
-    // Pasien (profil) & alamat
-    Route::resource('/pasien', Patient\PatientProfileController::class)
-        ->except(['show'])
-        ->parameters(['pasien' => 'patient']);
-    Route::resource('pasien.alamat', Patient\PatientAddressController::class)
-        ->except(['show'])
-        ->parameters(['pasien' => 'patient', 'alamat' => 'address']);
+        $booking = $request->session()->get('booking', []);
+        $booking = array_merge($booking, [
+            'service_ids' => $parsed['service_ids'],
+            'complaint' => $parsed['complaint'],
+            'preferred_date' => $parsed['preferred_date'],
+            'preferred_time_window' => $parsed['preferred_time_window'],
+        ]);
 
-    // Profil akun
-    Route::get('/profil', [Patient\ProfileController::class, 'edit'])->name('profil.edit');
-    Route::put('/profil', [Patient\ProfileController::class, 'update'])->name('profil.update');
+        $request->session()->put('booking', $booking);
 
-    // Notifikasi in-app
-    Route::get('/notifikasi', [Patient\NotificationController::class, 'index'])->name('notifikasi.index');
-    Route::post('/notifikasi/{notification}/baca', [Patient\NotificationController::class, 'markRead'])->name('notifikasi.baca');
-    Route::post('/notifikasi/baca-semua', [Patient\NotificationController::class, 'markAllRead'])->name('notifikasi.baca-semua');
-});
+        if (! $request->user()) {
+            return redirect()->route('login')
+                ->with('info', 'Silakan masuk terlebih dahulu agar AI bisa lanjut ke form booking otomatis.');
+        }
 
-/*
-|--------------------------------------------------------------------------
-| ATTACHMENTS — upload privat + unduhan terotorisasi
-|--------------------------------------------------------------------------
-*/
-Route::middleware('auth')->group(function () {
-    Route::get('/lampiran/{attachment}/unduh', [AttachmentController::class, 'download'])->name('attachments.download');
-    Route::post('/lampiran', [AttachmentController::class, 'store'])->name('attachments.store');
-    Route::delete('/lampiran/{attachment}', [AttachmentController::class, 'destroy'])->name('attachments.destroy');
-});
+        $user = $request->user();
+        $patient = $user->patientProfiles()->orderBy('name')->first();
 
-/*
-|--------------------------------------------------------------------------
-| STAFF AREA — /tugas (tenaga kesehatan)
-|--------------------------------------------------------------------------
-*/
-Route::middleware(['auth', 'role:medical_staff,admin,coordinator'])
-    ->prefix('tugas')
-    ->name('tugas.')
-    ->group(function () {
-        Route::get('/', [Staff\TaskController::class, 'index'])->name('index');
-        Route::get('/{appointment}', [Staff\TaskController::class, 'show'])->name('show');
-        Route::post('/{appointment}/konfirmasi', [Staff\TaskController::class, 'confirm'])->name('konfirmasi');
-        Route::post('/{appointment}/berangkat', [Staff\TaskController::class, 'depart'])->name('berangkat');
-        Route::post('/{appointment}/check-in', [Staff\TaskController::class, 'checkIn'])->name('checkin');
-        Route::post('/{appointment}/mulai', [Staff\TaskController::class, 'startService'])->name('mulai');
-        Route::post('/{appointment}/asesmen', [Staff\TaskController::class, 'saveAssessment'])->name('asesmen');
-        Route::post('/{appointment}/selesai', [Staff\TaskController::class, 'complete'])->name('selesai');
-    });
+        if ($patient) {
+            $booking['patient_profile_id'] = $patient->id;
+            $address = $patient->addresses()->orderBy('is_primary')->first();
+            if ($address) {
+                $booking['patient_address_id'] = $address->id;
+            }
+        }
 
-/*
-|--------------------------------------------------------------------------
-| OPERATIONAL AREA — /operasional (admin, koordinator, manajer)
-|--------------------------------------------------------------------------
-*/
-Route::middleware(['auth', 'role:admin,coordinator,manager'])
-    ->prefix('operasional')
-    ->name('operasional.')
-    ->group(function () {
-        Route::get('/', [Operational\DashboardController::class, 'index'])->name('dashboard');
+        $request->session()->put('booking', $booking);
 
-        // Permintaan homecare: verifikasi, skrining, jadwal, biaya
-        Route::get('/pengajuan', [Operational\RequestController::class, 'index'])->name('pengajuan.index');
-        Route::get('/pengajuan/{request:code}', [Operational\RequestController::class, 'show'])->name('pengajuan.show');
-        Route::post('/pengajuan/{request:code}/mulai-verifikasi', [Operational\RequestController::class, 'startReview'])->middleware('can:requests.verify')->name('pengajuan.verifikasi');
-        Route::post('/pengajuan/{request:code}/minta-informasi', [Operational\RequestController::class, 'requestInformation'])->middleware('can:requests.verify')->name('pengajuan.minta-informasi');
-        Route::post('/pengajuan/{request:code}/tolak', [Operational\RequestController::class, 'reject'])->middleware('can:requests.verify')->name('pengajuan.tolak');
-        Route::post('/pengajuan/{request:code}/setujui', [Operational\RequestController::class, 'approve'])->middleware('can:requests.verify')->name('pengajuan.setujui');
-        Route::post('/pengajuan/{request:code}/jadwalkan', [Operational\RequestController::class, 'schedule'])->middleware('can:requests.schedule')->name('pengajuan.jadwalkan');
-        Route::post('/pengajuan/{request:code}/batal', [Operational\RequestController::class, 'cancel'])->middleware('can:requests.verify')->name('pengajuan.batal');
-        Route::post('/pengajuan/{request:code}/pembayaran', [Operational\RequestController::class, 'recordPayment'])->middleware('can:payments.manage')->name('pengajuan.pembayaran');
+        $nextStep = ($patient && ($booking['patient_address_id'] ?? null)) ? 'review' : 'pasien';
 
-        // Jadwal & monitoring kunjungan
-        Route::get('/jadwal', [Operational\AppointmentController::class, 'index'])->name('jadwal.index');
-        Route::get('/jadwal/{appointment}', [Operational\AppointmentController::class, 'show'])->name('jadwal.show');
+        return redirect()->route('akun.pesan.step', $nextStep)
+            ->with('success', 'AI berhasil menyiapkan kebutuhan Anda. Silakan cek ringkasan dan lanjutkan konfirmasi.');
+    }
 
-        // Pasien (semua akun)
-        Route::get('/pasien', [Operational\PatientController::class, 'index'])->name('pasien.index');
-        Route::get('/pasien/{patient}', [Operational\PatientController::class, 'show'])->name('pasien.show');
+    public function services(): View
+    {
+        return view('public.services', [
+            'services' => $this->catalog->activeServices(),
+        ]);
+    }
 
-        // Laporan
-        Route::get('/laporan', [Operational\ReportController::class, 'index'])->middleware('can:reports.view')->name('laporan.index');
+    public function serviceDetail(HomecareService $service): View
+    {
+        abort_unless($service->is_active, 404);
 
-        // Audit trail
-        Route::get('/audit', [Operational\AuditLogController::class, 'index'])->middleware('can:audit.view')->name('audit.index');
+        return view('public.service-detail', [
+            'service' => $service,
+            'relatedServices' => $this->catalog->activeServices()
+                ->where('id', '!=', $service->id)
+                ->where('category', $service->category)
+                ->take(3),
+        ]);
+    }
 
-        // Master data: layanan & tarif
-        Route::resource('/layanan', Operational\ServiceController::class)
-            ->except(['show'])
-            ->middleware('can:services.manage')
-            ->parameters(['layanan' => 'service']);
+    public function howItWorks(): View
+    {
+        return view('public.how-it-works');
+    }
 
-        // Master data: tenaga kesehatan
-        Route::resource('/petugas', Operational\StaffController::class)
-            ->except(['show'])
-            ->middleware('can:staff.manage')
-            ->parameters(['petugas' => 'staff']);
-    });
+    public function faq(): View
+    {
+        return view('public.faq', ['faqs' => $this->faqs()]);
+    }
+
+    public function contact(): View
+    {
+        return view('public.contact');
+    }
+
+    /** @return list<array{q: string, a: string}> */
+    private function faqs(): array
+    {
+        return [
+            ['q' => 'Apa itu layanan Homecare?', 'a' => 'Homecare adalah pelayanan kesehatan yang diberikan oleh tenaga profesional rumah sakit langsung di rumah Anda — mulai dari kunjungan dokter, perawat, fisioterapi, hingga pemeriksaan mandiri.'],
+            ['q' => 'Siapa yang bisa menggunakan layanan ini?', 'a' => 'Siapa saja: pasien yang sulit bepergian ke rumah sakit, lansia, ibu dan bayi, pasien pasca-rawat inap, atau keluarga yang membutuhkan bantuan layanan kesehatan rumah.'],
+            ['q' => 'Bagaimana cara memesan?', 'a' => 'Daftar atau masuk, pilih "Pesan Homecare", isi kebutuhan Anda dalam beberapa langkah singkat, lalu tunggu verifikasi tim kami. Anda akan dibantu setiap tahapnya.'],
+            ['q' => 'Berapa lama proses verifikasinya?', 'a' => 'Pada jam kerja, pengajuan biasanya diverifikasi dalam beberapa jam. Anda dapat memantau statusnya kapan saja di halaman Pengajuan.'],
+            ['q' => 'Berapa biayanya?', 'a' => 'Setiap layanan memiliki tarif yang tercantum jelas sebelum Anda mengirim pengajuan. Total biaya dikonfirmasi kembali oleh koordinator setelah skrining awal.'],
+            ['q' => 'Apakah ini layanan darurat?', 'a' => 'Bukan. Homecare tidak untuk kegawatdaruratan. Bila kondisi gawat darurat, segera hubungi '.config('homecare.emergency_number').' atau IGD sesuai kebutuhan.'],
+            ['q' => 'Apakah data saya aman?', 'a' => 'Ya. Dokumen seperti KTP atau hasil pemeriksaan disimpan di penyimpanan privat yang hanya bisa diakses pihak berwenang, dan setiap akses tercatat dengan audit trail.'],
+            ['q' => 'Bisakah saya memesan untuk anggota keluarga?', 'a' => 'Tentu. Dalam satu akun Anda dapat menambahkan beberapa profil pasien (diri sendiri, orang tua, anak, dsb.) dan memilih untuk siapa layanan ingin dipesan.'],
+        ];
+    }
+}
+
