@@ -77,6 +77,11 @@ class BookingWizardController extends Controller
         // (ValidatesWhenResolved); gagal → ValidationException → redirect back.
         $formRequest = app($formRequestClass);
 
+        // Ensure the request is properly resolved and validated
+        if (!$formRequest instanceof \Illuminate\Foundation\Http\FormRequest) {
+            return redirect()->route('akun.pesan.step', 'review');
+        }
+
         $validated = $formRequest->validated();
 
         // Berkas tidak boleh masuk ke session (UploadedFile tak dapat diserialisasi);

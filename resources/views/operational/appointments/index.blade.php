@@ -14,7 +14,7 @@
             <x-input name="tanggal" type="date" label="Tanggal" :value="$date->toDateString()" class="sm:w-52" />
             <div class="sm:w-56">
                 <x-select name="status" label="Status" placeholder="Semua status"
-                          :options="$statuses->mapWithKeys(fn ($s) => [$s->value => $s->label()])->all()"
+                          :options="collect($statuses)->mapWithKeys(fn ($s) => [$s->value => $s->label()])->all()"
                           :value="$currentStatus" />
             </div>
             <div class="flex gap-2">

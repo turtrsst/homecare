@@ -78,7 +78,7 @@
                 </div>
 
                 @php
-                    $fileErrorKeys = $errors->keys()->filter(
+                    $fileErrorKeys = collect($errors->keys())->filter(
                         fn (string $key) => $key === 'files' || str_starts_with($key, 'files.')
                     );
                 @endphp

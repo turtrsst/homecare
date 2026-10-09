@@ -90,13 +90,27 @@ class SubmitHomecareRequest
     {
         $prefix = 'HC-'.now()->format('Ym').'-';
 
-        $last = HomecareRequest::query()
-            ->where('code', 'like', $prefix.'%')
-            ->orderByDesc('code')
-            ->value('code');
+        // Retry logic untuk handle race condition
+        $maxAttempts = 5;
+        for ($attempt = 0; $attempt < $maxAttempts; $attempt++) {
+            $last = HomecareRequest::query()
+                ->where('code', 'like', $prefix.'%')
+                ->orderByDesc('code')
+                ->value('code');
 
-        $sequence = $last ? ((int) substr($last, -4)) + 1 : 1;
+            $sequence = $last ? ((int) substr($last, -4)) + 1 : 1;
+            $code = $prefix.str_pad((string) $sequence, 4, '0', STR_PAD_LEFT);
 
-        return $prefix.str_pad((string) $sequence, 4, '0', STR_PAD_LEFT);
+            // Check if code already exists
+            if (!HomecareRequest::query()->where('code', $code)->exists()) {
+                return $code;
+            }
+
+            // Wait sebelum retry
+            usleep(100000); // 100ms
+        }
+
+        // Fallback: gunakan timestamp
+        return $prefix.now()->format('His');
     }
 }
