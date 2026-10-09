@@ -1,0 +1,21 @@
+{
+    "name": "Soeradji Care — RSUP Dr. Soeradji Tirtonegoro Klaten",
+    "short_name": "Soeradji Care",
+    "description": "Layanan homecare resmi RSUP Dr. Soeradji Tirtonegoro Klaten. Pesan kunjungan tenaga kesehatan ke rumah dengan AI Assistant Sora.",
+    "start_url": "/?source=pwa",
+    "scope": "/",
+    "display": "standalone",
+    "orientation": "portrait",
+    "background_color": "#f8fafc",
+    "theme_color": "#285fce",
+    "lang": "id-ID",
+    "categories": ["health", "medical"],
+    "icons": [
+        { "src": "/images/soeradji-care-logo.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+        { "src": "/images/soeradji-care-logo.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "maskable" }
+    ],
+    "shortcuts": [
+        { "name": "Tanya Sora", "short_name": "Sora", "url": "/asisten", "icons": [{ "src": "/images/soeradji-care-logo.svg", "sizes": "any" }] },
+        { "name": "Pengajuan Saya", "short_name": "Pengajuan", "url": "/akun/pengajuan", "icons": [{ "src": "/images/soeradji-care-logo.svg", "sizes": "any" }] }
+    ]
+}

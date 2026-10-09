@@ -39,7 +39,7 @@ class RequestStatusChanged extends Notification
         }
 
         return $mail
-            ->action('Lihat Pengajuan', url('/akun/pengajuan/'.$this->request->code))
+            ->action('Lihat Pengajuan', route('akun.pengajuan.show', $this->request->code))
             ->line('Terima kasih telah mempercayai layanan homecare kami.');
     }
 
@@ -50,7 +50,7 @@ class RequestStatusChanged extends Notification
             'type' => 'request_status',
             'title' => 'Pengajuan '.$this->request->code.': '.$this->statusLabel,
             'message' => $this->extraMessage ?? 'Status pengajuan homecare Anda diperbarui.',
-            'url' => '/akun/pengajuan/'.$this->request->code,
+            'url' => route('akun.pengajuan.show', $this->request->code),
             'request_code' => $this->request->code,
         ];
     }

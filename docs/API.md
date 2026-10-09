@@ -1,4 +1,4 @@
-# API v1 — Soeradji Gocare
+# API v1 — Soeradji Care
 
 Base URL: `GET|POST /api/v1/...` — autentikasi **Laravel Sanctum** (Bearer token),
 rate limiting `throttle:api` (60/menit) dan `throttle:5,1` untuk login.

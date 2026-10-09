@@ -1,8 +1,8 @@
-# Architecture — Soeradji Gocare
+# Architecture — Soeradji Care
 
 ## Ringkasan
 
-Aplikasi **Soeradji Gocare** berbasis Laravel yang memungkinkan pasien/keluarga
+Aplikasi **Soeradji Care** berbasis Laravel yang memungkinkan pasien/keluarga
 mengajukan pelayanan kesehatan di rumah, dan memungkinkan rumah sakit memverifikasi,
 menjadwalkan, menugaskan tenaga kesehatan, memonitor kunjungan, serta mendokumentasikan
 pelayanan.

@@ -5,7 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 
 /**
- * Seed data demo aplikasi Soeradji Gocare.
+ * Seed data demo aplikasi Soeradji Care.
  *
  * Akun demo (password: "password"):
  *   admin@homecare.rs        — Administrator

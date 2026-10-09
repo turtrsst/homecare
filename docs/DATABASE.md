@@ -1,4 +1,4 @@
-# Database Design — Soeradji Gocare
+# Database Design — Soeradji Care
 
 Koneksi default development: **SQLite**; produksi: **MySQL/MariaDB** (lihat `.env.example`).
 Semua tabel memakai `id` (bigIncrements/uuid sesuai kebutuhan), `created_at`, `updated_at`,

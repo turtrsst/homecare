@@ -29,7 +29,7 @@ class RequestNeedsInformation extends Notification
             ->greeting('Halo, '.$notifiable->firstName().'!')
             ->line('Untuk memproses pengajuan homecare '.$this->request->code.', tim kami membutuhkan informasi tambahan:')
             ->line($this->questions)
-            ->action('Lengkapi Informasi', url('/akun/pengajuan/'.$this->request->code))
+            ->action('Lengkapi Informasi', route('akun.pengajuan.show', $this->request->code))
             ->line('Setelah Anda melengkapi, pengajuan akan kembali diproses.');
     }
 
@@ -40,7 +40,7 @@ class RequestNeedsInformation extends Notification
             'type' => 'request_needs_information',
             'title' => 'Perlu informasi tambahan untuk '.$this->request->code,
             'message' => $this->questions,
-            'url' => '/akun/pengajuan/'.$this->request->code,
+            'url' => route('akun.pengajuan.show', $this->request->code),
             'request_code' => $this->request->code,
         ];
     }

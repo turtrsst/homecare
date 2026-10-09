@@ -1,4 +1,4 @@
-# 🏥 Soeradji Gocare
+# 🏥 Soeradji Care
 
 Aplikasi layanan **homecare** rumah sakit: pasien/keluarga memesan kunjungan tenaga
 kesehatan ke rumah (dokter, perawat, bidan, fisioterapis, dll.), sementara tim rumah

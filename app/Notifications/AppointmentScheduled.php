@@ -39,7 +39,7 @@ class AppointmentScheduled extends Notification
             ->line('Waktu: '.$this->appointment->formattedSchedule())
             ->line('Petugas: '.$staffNames)
             ->line('Yang perlu disiapkan: tempat yang nyaman untuk pemeriksaan, kartu identitas/berobat, serta obat dan hasil pemeriksaan terakhir (jika ada).')
-            ->action('Lihat Detail', url('/akun/pengajuan/'.$this->appointment->request->code))
+            ->action('Lihat Detail', route('akun.pengajuan.show', $this->appointment->request->code))
             ->line('Bila ada perubahan, hubungi kami segera. Untuk kondisi darurat hubungi '.config('homecare.emergency_number').' atau IGD terdekat.');
     }
 
@@ -50,7 +50,7 @@ class AppointmentScheduled extends Notification
             'type' => 'appointment_scheduled',
             'title' => 'Kunjungan terjadwal: '.$this->appointment->formattedSchedule(),
             'message' => 'Pengajuan '.$this->appointment->request->code.' telah mendapatkan jadwal dan petugas.',
-            'url' => '/akun/pengajuan/'.$this->appointment->request->code,
+            'url' => route('akun.pengajuan.show', $this->appointment->request->code),
             'request_code' => $this->appointment->request->code,
         ];
     }

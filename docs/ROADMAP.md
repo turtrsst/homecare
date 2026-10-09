@@ -1,4 +1,4 @@
-# Roadmap — Soeradji Gocare
+# Roadmap — Soeradji Care
 
 ## PHASE 1 — FOUNDATION ✅
 - Bootstrap Laravel 13 (PHP 8.2+), Blade + Tailwind v4 + Alpine + Vite.
